@@ -48,7 +48,7 @@ function ProjectDetailChart({ pro_id , server_id }) {
   useEffect(() => {
     const getProjectDetailList = async () => {
       try {
-        const response = await axios.get(`http://13.124.230.133:8888/api/main/user/projectDetailChart/${pro_id}/${server_id}`);
+        const response = await axios.get(`http://43.201.243.223:8888/api/main/user/projectDetailChart/${pro_id}/${server_id}`);
 
         setProjectDetailList(response.data);
         console.log(response.data);

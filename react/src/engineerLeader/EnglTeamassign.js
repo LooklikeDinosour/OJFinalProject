@@ -20,7 +20,7 @@ function EnglTeamassign(props) {
     // props.leaderid가 null이 아닌 경우에만 axios.post 요청을 보냅니다.
     if (props.userId !== null) {
 
-      axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList',{
+      axios.get('http://43.201.243.223:8888/api/main/engleader/getTeamEngList',{
          params: {
           leader_id: props.leader_id,
           pro_pi: pro_pi
@@ -81,12 +81,12 @@ function EnglTeamassign(props) {
     var eng_enid = checkedEng.previousElementSibling.value;
 
 
-    axios.post('http://13.124.230.133:8888/api/main/engleader/assignEng', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id })
+    axios.post('http://43.201.243.223:8888/api/main/engleader/assignEng', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id })
       .then(response => {
 
         console.log(response);
         if (response.data === "ok") {
-            axios.get('http://13.124.230.133:8888/api/main/engleader/updatePro')
+            axios.get('http://43.201.243.223:8888/api/main/engleader/updatePro')
           setModalIsOpen(false);
           const classname = props.server_id;
           const btn_change = document.querySelector(

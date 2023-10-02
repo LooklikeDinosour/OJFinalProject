@@ -24,7 +24,7 @@ function AdminAnnoList({ checkPermission }) {
 
         if(searchValue.length==0){
 
-            const response = await axios.get(`http://13.124.230.133:8888/api/main/AnnoList?currentPage=${currentPage}&postsPerPage=${postsPerPage}&role=${checkPermission.role}`)
+            const response = await axios.get(`http://43.201.243.223:8888/api/main/AnnoList?currentPage=${currentPage}&postsPerPage=${postsPerPage}&role=${checkPermission.role}`)
           
             setPageInfo(response.data);
             
@@ -38,7 +38,7 @@ function AdminAnnoList({ checkPermission }) {
 
      
         if(searchValue.length==0){
-            const response = await axios.get(`http://13.124.230.133:8888/api/main/admin/AnnoTotal?role=${checkPermission.role}`)
+            const response = await axios.get(`http://43.201.243.223:8888/api/main/admin/AnnoTotal?role=${checkPermission.role}`)
             // const result=response.data.filter(data=>data.notice_target==checkPermission.role||data.notice_target=="ALL")
            
             setTotal(response.data);

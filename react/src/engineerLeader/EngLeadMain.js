@@ -28,7 +28,7 @@ function EngLeadMain(props) {
   useEffect(() => {
     // props.userId가 null이 아닌 경우에만 axios 요청을 보냅니다.
     // if (props.userId !== undefined && props.userId != null && props.userId!=='') {
-      axios.get('http://13.124.230.133:8888/api/main/engleader/main',{
+      axios.get('http://43.201.243.223:8888/api/main/engleader/main',{
         params: { userId: props.userId }
       })
         .then(response => {
@@ -76,7 +76,7 @@ function EngLeadMain(props) {
   const [alarmModals, setAlarmModals] = useState([]);
   useEffect(() => {
     axios
-      .get("http://13.124.230.133:8888/api/main/alarm/getAlarmList", {
+      .get("http://43.201.243.223:8888/api/main/alarm/getAlarmList", {
         params: { user_id: props.userId },
       })
       .then((response) => {

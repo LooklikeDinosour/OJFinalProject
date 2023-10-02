@@ -31,7 +31,7 @@ function UserInsRequestModal(props) {
 
   useEffect(() => {
     if(props.server_id!==null){
-      axios.get(`http://13.124.230.133:8888/api/main/user/UserInsRequestModal/${props.server_id}`)
+      axios.get(`http://43.201.243.223:8888/api/main/user/UserInsRequestModal/${props.server_id}`)
       .then(response => {
         setAdServerInsList(response.data);
         console.log(response.data);
@@ -73,7 +73,7 @@ function UserInsRequestModal(props) {
 
     try {
       // Axios를 사용하여 서버에 POST 요청을 보냅니다.
-      const response = await axios.post("http://13.124.230.133:8888/api/main/insRequestForm", insReVO);
+      const response = await axios.post("http://43.201.243.223:8888/api/main/insRequestForm", insReVO);
 
       // 서버에서 반환한 응답을 확인합니다.
       if (response.status === 200) {

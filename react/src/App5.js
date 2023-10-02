@@ -17,7 +17,7 @@ function App() {
     const handleSubmit=async()=>{
         console.log(process.env.REACT_APP_SECRET_KEY)
         console.log(form)
-        const response=await axios.post("http://13.124.230.133:8888/api/main/test",form)
+        const response=await axios.post("http://43.201.243.223:8888/api/main/test",form)
     }
   return (
     <div>

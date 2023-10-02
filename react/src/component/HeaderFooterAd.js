@@ -49,7 +49,7 @@ function HeaderFooterAd(props) {
   useEffect(() => {
     if (user_id !== "") {
       axios
-        .get("http://13.124.230.133:8888/api/main/alarm/getAlarmList", {
+        .get("http://43.201.243.223:8888/api/main/alarm/getAlarmList", {
           params: { user_id: user_id },
         })
         .then((response) => {
@@ -68,7 +68,7 @@ function HeaderFooterAd(props) {
     if (click.innerHTML === "모든 알람 보기") {
       if (user_id !== null) {
         axios
-          .get("http://13.124.230.133:8888/api/main/alarm/getAllAlarm", {
+          .get("http://43.201.243.223:8888/api/main/alarm/getAllAlarm", {
             params: {
               user_id: user_id,
             },
@@ -91,7 +91,7 @@ function HeaderFooterAd(props) {
   const clickAlarmno = (alarmNum, event) => {
     if (event.currentTarget.innerHTML === "안읽음") {
       event.currentTarget.innerHTML = "읽음";
-      axios.post("http://13.124.230.133:8888/api/main/alarm/changeAlarm", { alarmNum: alarmNum });
+      axios.post("http://43.201.243.223:8888/api/main/alarm/changeAlarm", { alarmNum: alarmNum });
       alert("알람을 확인 했습니다.");
     }
   };

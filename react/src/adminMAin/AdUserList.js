@@ -20,7 +20,7 @@ function AdUserList() {
   const itemsPerPage = 10; // 페이지당 아이템 수
 
   useEffect(() => {
-    axios.get('http://13.124.230.133:8888/api/main/admin/customerList').then((res) => {
+    axios.get('http://43.201.243.223:8888/api/main/admin/customerList').then((res) => {
       setList(res.data);
       setFirst(res.data);
     })

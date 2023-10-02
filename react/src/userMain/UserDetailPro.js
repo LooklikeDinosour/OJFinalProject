@@ -14,7 +14,7 @@ function UserDetailPro() {
   const {pro_id} = useParams();
 
   useEffect(()=>{
-    axios.get(`http://13.124.230.133:8888/api/main/user/prodetail/${pro_id}`).then((response)=>{
+    axios.get(`http://43.201.243.223:8888/api/main/user/prodetail/${pro_id}`).then((response)=>{
       setProDetail(response.data);
       console.log(response.data);
      setLoading(false);

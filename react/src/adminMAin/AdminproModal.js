@@ -36,7 +36,7 @@ function AdminproModal(props) {
   };
 
   useEffect(() => {
-    axios.get("http://13.124.230.133:8888/api/main/admin/getTeam").then((response) => {
+    axios.get("http://43.201.243.223:8888/api/main/admin/getTeam").then((response) => {
       setTeamLeader(response.data.teamLeader);
       setTeamMember(response.data.teamMember);
     });
@@ -44,7 +44,7 @@ function AdminproModal(props) {
 
   function submit() {
     axios
-      .post("http://13.124.230.133:8888/api/main/admin/inputTeamNum", inputData, {
+      .post("http://43.201.243.223:8888/api/main/admin/inputTeamNum", inputData, {
         headers: {
           "Content-Type": "application/json", // 또는 다른 올바른 Content-Type
         },

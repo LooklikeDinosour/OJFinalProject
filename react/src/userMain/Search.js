@@ -15,7 +15,7 @@ function Search({setSearchValue,style,categori,select,order,writer}){
   const handleClick =async () => {
    
     if(input1!=''){
-    const response = await axios.get(`http://13.124.230.133:8888/api/main/SearchInfo?table=${categori}&value=${input1}&columm=${select}&order=${order}&cs_writer=${writer}`)
+    const response = await axios.get(`http://43.201.243.223:8888/api/main/SearchInfo?table=${categori}&value=${input1}&columm=${select}&order=${order}&cs_writer=${writer}`)
     const newArray=response.data.map((obj)=>{
         const newObj={};
         for(const key in obj){

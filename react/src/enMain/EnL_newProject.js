@@ -21,7 +21,7 @@ function EnL_newProject({ checkPermission }) {
 
   useEffect(() => {
     axios
-      .get(`http://13.124.230.133:8888/api/main/engineer/newList/${eng_enid}`)
+      .get(`http://43.201.243.223:8888/api/main/engineer/newList/${eng_enid}`)
       .then((response) => {
         setData(response.data);
         setFirst(response.data);

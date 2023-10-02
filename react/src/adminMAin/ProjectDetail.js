@@ -13,7 +13,7 @@ function EnglProjectDetail() {
 
   useEffect(() => {
     axios
-      .get(`http://13.124.230.133:8888/api/main/admin/projectDetail/${pro_id}`)
+      .get(`http://43.201.243.223:8888/api/main/admin/projectDetail/${pro_id}`)
       .then((response) => {
         setInfo(response.data);
         setList(response.data.list);

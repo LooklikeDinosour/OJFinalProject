@@ -17,7 +17,7 @@ function EnglClientDetail() {
   useEffect(() => {
 
 
-    axios.get(`http://13.124.230.133:8888/api/main/engleader/getClientInfo/${cus_id}`)
+    axios.get(`http://43.201.243.223:8888/api/main/engleader/getClientInfo/${cus_id}`)
       .then(response => {
 
         setList(response.data.list);

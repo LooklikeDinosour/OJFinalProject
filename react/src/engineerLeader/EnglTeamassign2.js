@@ -30,7 +30,7 @@ function EnglTeamassign2(props) {
     // props.leaderid가 null이 아닌 경우에만 axios.post 요청을 보냅니다.
     if (props.userId !== null) {
 
-      axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList2',{
+      axios.get('http://43.201.243.223:8888/api/main/engleader/getTeamEngList2',{
          params: {
           leader_id: leader_id,
           pro_pi: pro_pi
@@ -89,7 +89,7 @@ function EnglTeamassign2(props) {
     var eng_enid = checkedEng.previousElementSibling.value;
 
 
-    axios.post('http://13.124.230.133:8888/api/main/engleader/assignEng2', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id, 
+    axios.post('http://43.201.243.223:8888/api/main/engleader/assignEng2', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id, 
                                                   insRequest_num: insRequest_num, pro_startdate: pro_startdate.pro_startdate, 
                                                   insRequest_type: insRequest_type })
       .then(response => {

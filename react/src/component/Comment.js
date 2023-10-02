@@ -27,7 +27,7 @@ function Comment({style,pk,id}) {
     return formattedDateTime;
 }
   const getComment=async()=>{
-    const response = await axios.get('http://13.124.230.133:8888/api/main/getComment?notice_num='+pk)
+    const response = await axios.get('http://43.201.243.223:8888/api/main/getComment?notice_num='+pk)
     setGetCom(response.data)
   }
   const handleCreateComment = async () => {
@@ -35,7 +35,7 @@ function Comment({style,pk,id}) {
     if(comments!=''){
 
         const com={  com_writer: id,  com_content: comments, notice_num: pk}
-        const response = await axios.post('http://13.124.230.133:8888/api/main/CreateComments',com)
+        const response = await axios.post('http://43.201.243.223:8888/api/main/CreateComments',com)
         setGetCom(response.data)
         setComments('');
     }else{
@@ -55,7 +55,7 @@ const deleteCom=(e)=>{
     
     const num=e.target.value
     
-    axios.get(`http://13.124.230.133:8888/api/main/commentDel?com_num=${num}&notice_num=${pk}`)
+    axios.get(`http://43.201.243.223:8888/api/main/commentDel?com_num=${num}&notice_num=${pk}`)
     .then(response=>{
         setGetCom(response.data)
     })
@@ -85,7 +85,7 @@ const updateCom=(e)=>{
       element.innerHTML = value
 
     
-      axios.get(`http://13.124.230.133:8888/api/main/commentUp?com_content=${value}&notice_num=${pk}&com_num=${com_num}`)
+      axios.get(`http://43.201.243.223:8888/api/main/commentUp?com_content=${value}&notice_num=${pk}&com_num=${com_num}`)
       .then(response=>{
         setGetCom(response.data)
         })  

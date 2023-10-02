@@ -21,7 +21,7 @@ function UserInQurylist({ checkPermission }) {
     const list = async () => {//현재 목록 불러오기
 
 
-            const response = await axios.get(`http://13.124.230.133:8888/api/main/csUserList?currentPage=${currentPage}&postsPerPage=${postsPerPage}&cs_writer=${checkPermission.sub}`)
+            const response = await axios.get(`http://43.201.243.223:8888/api/main/csUserList?currentPage=${currentPage}&postsPerPage=${postsPerPage}&cs_writer=${checkPermission.sub}`)
             setPageInfo(response.data);
             setFirst(response.data);
             setLoading(false);

@@ -20,7 +20,7 @@ function EnL_newProjectDetail() {
 
   useEffect(() => {
     axios
-      .get(`http://13.124.230.133:8888/api/main/engineer/newProjectDetail/${pro_id}`)
+      .get(`http://43.201.243.223:8888/api/main/engineer/newProjectDetail/${pro_id}`)
       .then((response) => {
         console.log(response.data);
         setList(response.data.list);

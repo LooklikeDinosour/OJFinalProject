@@ -26,7 +26,7 @@ function InspectionList({checkPermission}) {
 
 
   useEffect(() => {
-    axios.get(`http://13.124.230.133:8888/api/main/engineer/inspectionList/${eng_enid}`).then((res) => {
+    axios.get(`http://43.201.243.223:8888/api/main/engineer/inspectionList/${eng_enid}`).then((res) => {
       setList(res.data.inspectionList);
       setFirst(res.data.inspectionList);
       setLoading(false);

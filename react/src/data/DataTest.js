@@ -13,7 +13,7 @@ function DataTest({id}) {
   const [getSer,setGerSer]=useState([])
   const getServer=async()=>{
       const idGet={"id":id};
-      const response = await axios.post("http://13.124.230.133:8888/api/main/engineer/getServer",idGet)
+      const response = await axios.post("http://43.201.243.223:8888/api/main/engineer/getServer",idGet)
       setGerSer(response.data)
     }
     console.log(getSer)
@@ -21,7 +21,7 @@ function DataTest({id}) {
     getServer()
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://13.124.230.133:8888/api/main/servers');
+        const response = await axios.get('http://43.201.243.223:8888/api/main/servers');
         const newServerData = response.data;
         console.log(newServerData)
         /* const servers = [

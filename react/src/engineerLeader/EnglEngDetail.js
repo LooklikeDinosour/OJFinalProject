@@ -47,7 +47,7 @@ function EnglEngDetail() {
 
   useEffect(() => {
 
-    axios.get(`http://13.124.230.133:8888/api/main/engleader/getEngInfo/${eng_enid}`)
+    axios.get(`http://43.201.243.223:8888/api/main/engleader/getEngInfo/${eng_enid}`)
       .then(response => {
         setServerList(response.data.serverList);
         setScheList(response.data.scheList);

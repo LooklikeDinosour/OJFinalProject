@@ -29,7 +29,7 @@ function UserInsRequestCheckModal(props) {
 
   useEffect(() => {
     if(props.server_id!==null){
-      axios.get(`http://13.124.230.133:8888/api/main/user/UserInsRequestCheckModal/${props.server_id}/${props.cus_id}`)
+      axios.get(`http://43.201.243.223:8888/api/main/user/UserInsRequestCheckModal/${props.server_id}/${props.cus_id}`)
       .then(response => {
         console.log("값?",response.data);
         setAdServerInsList(response.data);

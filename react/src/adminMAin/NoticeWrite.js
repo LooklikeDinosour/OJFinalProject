@@ -42,8 +42,8 @@ function NoticeWrite({checkPermission}){
                 formData.append("file_data",fileUp);
                 formData.append("userId",AdminId);
 
-                await axios.post('http://13.124.230.133:8888/api/main/admin/noticeWrite', form)
-                const response = await axios.post('http://13.124.230.133:8888/api/main/cloudUpload', formData)
+                await axios.post('http://43.201.243.223:8888/api/main/admin/noticeWrite', form)
+                const response = await axios.post('http://43.201.243.223:8888/api/main/cloudUpload', formData)
                 if(response.data==='성공'){
                     alert('작성 완료 했습니다.')
                     history("/admin/annoList")
@@ -56,7 +56,7 @@ function NoticeWrite({checkPermission}){
             }
 
         }else{
-           const response= await axios.post('http://13.124.230.133:8888/api/main/admin/noticeWrite', form)
+           const response= await axios.post('http://43.201.243.223:8888/api/main/admin/noticeWrite', form)
            if(response.data==='성공'){
             alert('작성 완료 했습니다.')
             history("/admin/annoList")

@@ -16,7 +16,7 @@ function RequestDetail(props) {
   const [info, setInfo] = useState([]);
   const [list, setList] = useState([]);
   useEffect(() => {
-    axios.get(`http://13.124.230.133:8888/api/main/engleader/requestDetail/${pro_id}`)
+    axios.get(`http://43.201.243.223:8888/api/main/engleader/requestDetail/${pro_id}`)
       .then(response => {
 
         console.log(response);
@@ -35,7 +35,7 @@ function RequestDetail(props) {
 
     const engid = 'tnwjd2580';
     const serverId = '21ff55ca-4c9d-11ee-acdc-8cb0e993c4ae';
-    axios.post('http://13.124.230.133:8888/api/main/alarm/assignEmer', { engid: engid, serverId: serverId })
+    axios.post('http://43.201.243.223:8888/api/main/alarm/assignEmer', { engid: engid, serverId: serverId })
       .catch(err => { alert('실패' + err) })
   }
 

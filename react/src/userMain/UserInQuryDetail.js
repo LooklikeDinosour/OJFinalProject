@@ -41,7 +41,7 @@ function UserInQuryDetail({ checkPermission }) {
     const getFile = async () => {
         const file_num = DetailData.cs_num
 
-        const response = await axios.get(`http://13.124.230.133:8888/api/main/getPoto?cus_id=${file_num}`)
+        const response = await axios.get(`http://43.201.243.223:8888/api/main/getPoto?cus_id=${file_num}`)
         if (response.data === '파일 없음') {
             return;
         } else {
@@ -72,8 +72,8 @@ function UserInQuryDetail({ checkPermission }) {
                 formData.append("file_data", fileUp);
                 formData.append("userId", AdminId);
 
-                await axios.post('http://13.124.230.133:8888/api/main/admin/noticeUpdate', form)
-                const response = await axios.post('http://13.124.230.133:8888/api/main/cloudUpload', formData)
+                await axios.post('http://43.201.243.223:8888/api/main/admin/noticeUpdate', form)
+                const response = await axios.post('http://43.201.243.223:8888/api/main/cloudUpload', formData)
                 if (response.data === '성공') {
                     alert('수정 완료 했습니다.')
                     history("/admin/annoList")
@@ -86,7 +86,7 @@ function UserInQuryDetail({ checkPermission }) {
             }
 
         } else {
-            const response = await axios.post('http://13.124.230.133:8888/api/main/admin/noticeUpdate', form)
+            const response = await axios.post('http://43.201.243.223:8888/api/main/admin/noticeUpdate', form)
             if (response.data === '성공') {
 
                 alert('수정 완료 했습니다.')
@@ -111,7 +111,7 @@ function UserInQuryDetail({ checkPermission }) {
     const deleteAnno = () => {
         console.log(file.file_num)
         const deleteA = { notice_num: DetailData.cs_num, file_name: file.file_name, file_id: file.file_id }
-        axios.post("http://13.124.230.133:8888/api/main/inQuryDel", deleteA)
+        axios.post("http://43.201.243.223:8888/api/main/inQuryDel", deleteA)
         alert("삭제 되었습니다.")
         history("/user/inQuryList")
     }
@@ -119,7 +119,7 @@ function UserInQuryDetail({ checkPermission }) {
 
     //답변 업데이트
     const answerValue = () => {
-        axios.get("http://13.124.230.133:8888/api/main/csUpdate?cs_answer_yn=" + answer + "&cs_num=" + DetailData.cs_num)
+        axios.get("http://43.201.243.223:8888/api/main/csUpdate?cs_answer_yn=" + answer + "&cs_num=" + DetailData.cs_num)
             .then(response => {
                 alert(response.data)
             })
