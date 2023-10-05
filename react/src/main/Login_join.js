@@ -569,6 +569,160 @@ function Login_join(props) {
           handleSingIn();
         }
       };
+      const adminSingIn=async()=>{
+        const adminSingIn={
+            username: 'cloud200',
+            password: 'cloud200!',
+        }
+        const response = await axios.post('http://13.124.230.133:8888/api/main/login', adminSingIn);
+        if (response.status == 200) {
+
+
+            localStorage.setItem('token', response.data);
+
+            const token = localStorage.getItem('token');
+            let payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+            let dec = JSON.parse(base64.decode(payload));
+
+
+            if (dec.role === 'ROLE_USER') {
+                history('/user', {
+                    state: {
+                        role: 'ROLE_USER'
+                    }
+                });
+                
+                  
+                
+            } else if (dec.role === 'ROLE_ENGINEER') {
+
+                history('/engineer', {
+                    state: {
+                        role: 'ROLE_ENGINEER'
+                    }
+                });
+                
+            } else if (dec.role === 'ROLE_ADMIN') {
+                history('/admin', {
+                    state: {
+                        role: 'ROLE_ADMIN'
+                    }
+                });
+                
+            } else if (dec.role === "ROLE_ENGLEADER") {
+                history('/engineerleader', {
+                    state: {
+                        role: 'ROLE_ENGLEADER'
+                    }
+                });
+                
+            }
+        }
+
+
+    }
+    const engLSingIn=async()=>{
+        const engLSingIn={
+            username: 'eng03',
+            password: 'eng12345!',
+        }
+        const response = await axios.post('http://13.124.230.133:8888/api/main/login', engLSingIn);
+        if (response.status == 200) {
+
+
+            localStorage.setItem('token', response.data);
+
+            const token = localStorage.getItem('token');
+            let payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+            let dec = JSON.parse(base64.decode(payload));
+
+
+            if (dec.role === 'ROLE_USER') {
+                history('/user', {
+                    state: {
+                        role: 'ROLE_USER'
+                    }
+                });
+                
+                  
+                
+            } else if (dec.role === 'ROLE_ENGINEER') {
+
+                history('/engineer', {
+                    state: {
+                        role: 'ROLE_ENGINEER'
+                    }
+                });
+                
+            } else if (dec.role === 'ROLE_ADMIN') {
+                history('/admin', {
+                    state: {
+                        role: 'ROLE_ADMIN'
+                    }
+                });
+                
+            } else if (dec.role === "ROLE_ENGLEADER") {
+                history('/engineerleader', {
+                    state: {
+                        role: 'ROLE_ENGLEADER'
+                    }
+                });
+                
+            }
+        }
+
+    }
+    const engSingIn=async()=>{
+        const engSingIn={
+            username: 'engL3',
+            password: 'engl123!',
+        }
+        const response = await axios.post('http://13.124.230.133:8888/api/main/login', engSingIn);
+        if (response.status == 200) {
+
+
+            localStorage.setItem('token', response.data);
+
+            const token = localStorage.getItem('token');
+            let payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+            let dec = JSON.parse(base64.decode(payload));
+
+
+            if (dec.role === 'ROLE_USER') {
+                history('/user', {
+                    state: {
+                        role: 'ROLE_USER'
+                    }
+                });
+                
+                  
+                
+            } else if (dec.role === 'ROLE_ENGINEER') {
+
+                history('/engineer', {
+                    state: {
+                        role: 'ROLE_ENGINEER'
+                    }
+                });
+                
+            } else if (dec.role === 'ROLE_ADMIN') {
+                history('/admin', {
+                    state: {
+                        role: 'ROLE_ADMIN'
+                    }
+                });
+                
+            } else if (dec.role === "ROLE_ENGLEADER") {
+                history('/engineerleader', {
+                    state: {
+                        role: 'ROLE_ENGLEADER'
+                    }
+                });
+                
+            }
+        }
+
+    }
     return (
         <>
             <div id="container" className="container1">
@@ -705,6 +859,15 @@ function Login_join(props) {
 
                                 <button style={{ height: "48px", margin: 0, padding: 0 }} onClick={handleSingIn}>
                                     로그인하기
+                                </button>
+                                <button style={{ height: "48px", margin: "10px 0 ", padding: 0 }} onClick={adminSingIn}>
+                                    관리자로 로그인하기
+                                </button>
+                                <button style={{ height: "48px", margin: "10px 0 ", padding: 0 }} onClick={engLSingIn}>
+                                   엔지니어 리더로 로그인하기
+                                </button>
+                                <button style={{ height: "48px", margin: "10px 0 ", padding: 0 }} onClick={engSingIn}>
+                                   엔지니어로 로그인하기
                                 </button>
                                 <h2 style={{ fontSize: '20px', color: '#f24242' }}>{message}</h2>
                                 <p>
