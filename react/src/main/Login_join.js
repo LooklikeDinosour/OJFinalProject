@@ -623,8 +623,8 @@ function Login_join(props) {
     }
     const engLSingIn=async()=>{
         const engLSingIn={
-            username: 'eng03',
-            password: 'eng12345!',
+            username: 'engL3',
+            password: 'engl123!',
         }
         const response = await axios.post('http://43.201.243.223:8888/api/main/login', engLSingIn);
         if (response.status == 200) {
@@ -674,8 +674,9 @@ function Login_join(props) {
     }
     const engSingIn=async()=>{
         const engSingIn={
-            username: 'engL3',
-            password: 'engl123!',
+            username: 'eng03',
+            password: 'eng12345!',
+          
         }
         const response = await axios.post('http://43.201.243.223:8888/api/main/login', engSingIn);
         if (response.status == 200) {
