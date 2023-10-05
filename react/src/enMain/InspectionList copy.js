@@ -26,7 +26,7 @@ function InspectionList() {
 
 
   useEffect(() => {
-    axios.get('http://43.201.243.223:8888/api/main/engineer/inspectionList').then((res) => {
+    axios.get('http://13.209.147.231:8888/api/main/engineer/inspectionList').then((res) => {
       setList(res.data);
       setFirst(res.data);
       setLoading(false);

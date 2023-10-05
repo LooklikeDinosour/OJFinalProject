@@ -40,7 +40,7 @@ function AdminAnnoDetail({ checkPermission }) {
     const getFile = async () => {
         const file_num = DetailData.notice_num
 
-        const response = await axios.get(`http://43.201.243.223:8888/api/main/getPoto?cus_id=${file_num}`)
+        const response = await axios.get(`http://13.209.147.231:8888/api/main/getPoto?cus_id=${file_num}`)
         if (response.data === '파일 없음') {
             return;
         } else {
@@ -71,8 +71,8 @@ function AdminAnnoDetail({ checkPermission }) {
                 formData.append("file_data", fileUp);
                 formData.append("userId", AdminId);
 
-                await axios.post('http://43.201.243.223:8888/api/main/admin/noticeUpdate', form)
-                const response = await axios.post('http://43.201.243.223:8888/api/main/cloudUpload', formData)
+                await axios.post('http://13.209.147.231:8888/api/main/admin/noticeUpdate', form)
+                const response = await axios.post('http://13.209.147.231:8888/api/main/cloudUpload', formData)
                 if (response.data === '성공') {
                     alert('수정 완료 했습니다.')
                     history("/admin/annoList")
@@ -85,7 +85,7 @@ function AdminAnnoDetail({ checkPermission }) {
             }
 
         } else {
-            const response = await axios.post('http://43.201.243.223:8888/api/main/admin/noticeUpdate', form)
+            const response = await axios.post('http://13.209.147.231:8888/api/main/admin/noticeUpdate', form)
             if (response.data === '성공') {
                 
                 alert('수정 완료 했습니다.')
@@ -110,7 +110,7 @@ function AdminAnnoDetail({ checkPermission }) {
     const deleteAnno = () => {
         console.log(file.file_num)
         const deleteA={notice_num:DetailData.notice_num,file_name:file.file_name,file_id:file.file_id}
-        axios.post("http://43.201.243.223:8888/api/main/AnnoDel",deleteA)
+        axios.post("http://13.209.147.231:8888/api/main/AnnoDel",deleteA)
         alert("삭제 되었습니다.")
         history("/admin/annoList")
     }

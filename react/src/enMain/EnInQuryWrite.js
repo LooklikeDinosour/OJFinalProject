@@ -56,8 +56,8 @@ function UserInQuryWrite({ checkPermission }) {
                     formData.append("file_data", fileUp);
                     formData.append("userId", AdminId);
 
-                    await axios.post('http://43.201.243.223:8888/api/main/user/quryeWrite', form)
-                    const response = await axios.post('http://43.201.243.223:8888/api/main/cloudUploadCs', formData)
+                    await axios.post('http://13.209.147.231:8888/api/main/user/quryeWrite', form)
+                    const response = await axios.post('http://13.209.147.231:8888/api/main/cloudUploadCs', formData)
                     if (response.data === '성공') {
                         alert('작성 완료 했습니다.')
                         history("/engineer/inQuryList")
@@ -70,7 +70,7 @@ function UserInQuryWrite({ checkPermission }) {
                 }
 
             } else {
-                const response = await axios.post('http://43.201.243.223:8888/api/main/user/quryeWrite', form)
+                const response = await axios.post('http://13.209.147.231:8888/api/main/user/quryeWrite', form)
                 if (response.data === '성공') {
                     alert('작성 완료 했습니다.')
                     history("/engineer/inQuryList")

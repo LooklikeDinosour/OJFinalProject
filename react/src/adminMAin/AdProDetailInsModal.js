@@ -39,7 +39,7 @@ function formatDate(dateString) {
 
   useEffect(() => {
     if(props.server_id!==null){
-      axios.get(`http://43.201.243.223:8888/api/main/admin/AdProDetailInsModal/${props.server_id}`)
+      axios.get(`http://13.209.147.231:8888/api/main/admin/AdProDetailInsModal/${props.server_id}`)
       .then(response => {
         setAdServerInsList(response.data);
         console.log(response.data);

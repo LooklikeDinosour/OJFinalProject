@@ -41,7 +41,7 @@ function EnglAllSchedule(props) {
 
   useEffect(() => {
     if (props.userId !== null) {
-    axios.get('http://43.201.243.223:8888/api/main/engleader/getAllSche',{
+    axios.get('http://13.209.147.231:8888/api/main/engleader/getAllSche',{
       params:{userId:props.userId}
     })
       .then(response => {
@@ -94,7 +94,7 @@ function EnglAllSchedule(props) {
     setSelectedEvent(event.event);
     console.log(event.event)
     const sche_num={"sche_num":event.event.extendedProps.sche_num}
-    const response=await axios.post("http://43.201.243.223:8888/api/main/engineer/getScheInfo",sche_num)
+    const response=await axios.post("http://13.209.147.231:8888/api/main/engineer/getScheInfo",sche_num)
     console.log(response)
     setServerList(response.data)
     // 모달 스타일 업데이트

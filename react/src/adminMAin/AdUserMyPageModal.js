@@ -39,7 +39,7 @@ function AdUserMyPageModal(props) {
   
       const cus_id={"cus_id":props.cus_id}
       console.log(1)
-      const response=await axios.post('http://43.201.243.223:8888/api/main/client/getPro', cus_id) // v프
+      const response=await axios.post('http://13.209.147.231:8888/api/main/client/getPro', cus_id) // v프
       console.log(response.data)
 
       setAdUserMyPage(response.data)

@@ -168,7 +168,7 @@ function UserApply({ state }) {
 
     try {
       // Axios를 사용하여 서버에 POST 요청을 보냅니다.
-      const response = await axios.post("http://43.201.243.223:8888/api/main/applyForm", formData);
+      const response = await axios.post("http://13.209.147.231:8888/api/main/applyForm", formData);
 
       // 서버에서 반환한 응답을 확인합니다.
       if (response.status === 200) {

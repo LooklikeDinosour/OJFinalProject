@@ -23,7 +23,7 @@ function EnglProjectList(props) {
   
   useEffect(() => {
     if (props.userId !== null) {
-    axios.get('http://43.201.243.223:8888/api/main/engleader/getAllPro',{
+    axios.get('http://13.209.147.231:8888/api/main/engleader/getAllPro',{
       params : {userId:props.userId}
     })
       .then(response => {

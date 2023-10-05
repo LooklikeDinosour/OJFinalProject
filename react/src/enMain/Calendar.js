@@ -48,7 +48,7 @@ function EnEngDetail({checkPermission}) {
 
   useEffect(() => {
 
-    axios.get(`http://43.201.243.223:8888/api/main/engleader/getEngInfo/${eng_enid}`)
+    axios.get(`http://13.209.147.231:8888/api/main/engleader/getEngInfo/${eng_enid}`)
       .then(response => {
         setScheList(response.data.scheList);
         console.log(response.data)
@@ -91,7 +91,7 @@ function EnEngDetail({checkPermission}) {
   const handleEventClick = async(event) => {
     setSelectedEvent(event.event);
     const sche_num={"sche_num":event.event.extendedProps.sche_num}
-    const response=await axios.post("http://43.201.243.223:8888/api/main/engineer/getScheInfo",sche_num)
+    const response=await axios.post("http://13.209.147.231:8888/api/main/engineer/getScheInfo",sche_num)
     console.log(response)
     setServerList(response.data)
     // 모달 스타일 업데이트
@@ -145,10 +145,10 @@ function EnEngDetail({checkPermission}) {
           sche_enddate: endDate,
           sche_num: scheNum,
         };
-        axios.post('http://43.201.243.223:8888/api/main/engineer/editSchedule', requestData)
+        axios.post('http://13.209.147.231:8888/api/main/engineer/editSchedule', requestData)
         .then(response => {
           console.log('일정 수정 요청이 성공했습니다.');
-          axios.get(`http://43.201.243.223:8888/api/main/engleader/getEngInfo/${eng_enid}`)
+          axios.get(`http://13.209.147.231:8888/api/main/engleader/getEngInfo/${eng_enid}`)
           .then(response => {          
           setScheList(response.data.scheList);
           setModalIsOpen(false);

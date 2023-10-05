@@ -22,7 +22,7 @@ function AdminInQurylist() {
     const list = async () => {//현재 목록 불러오기
 
 
-            const response = await axios.get(`http://43.201.243.223:8888/api/main/csList?currentPage=${currentPage}&postsPerPage=${postsPerPage}`)
+            const response = await axios.get(`http://13.209.147.231:8888/api/main/csList?currentPage=${currentPage}&postsPerPage=${postsPerPage}`)
             setPageInfo(response.data);
             setFirst(response.data);
             setLoading(false);

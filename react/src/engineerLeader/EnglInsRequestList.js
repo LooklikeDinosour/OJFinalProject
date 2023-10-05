@@ -24,7 +24,7 @@ function EnglInsRequestList(props) {
   
   useEffect(() => {
     if (props.userId !== null) {
-    axios.get('http://43.201.243.223:8888/api/main/engleader/insRequestList',{
+    axios.get('http://13.209.147.231:8888/api/main/engleader/insRequestList',{
       params : {userId:props.userId}
     })
       .then(response => {

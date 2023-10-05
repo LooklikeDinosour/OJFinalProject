@@ -29,7 +29,7 @@ console.log("값"+ProjectDetailList)
 
 
   useEffect(() => {
-    axios.get(`http://43.201.243.223:8888/api/main/user/projectDetailList/${info.cus_id}`) 
+    axios.get(`http://13.209.147.231:8888/api/main/user/projectDetailList/${info.cus_id}`) 
       .then((response) => {
         console.log("??" + response.data);
         setList(response.data);

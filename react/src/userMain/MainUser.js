@@ -38,7 +38,7 @@ function MainUser({state,userId}) {
 
     useEffect(()=>{
       if(userId!=null){
-      axios.get(`http://43.201.243.223:8888/api/main/user/${userId}`).then((response)=>{
+      axios.get(`http://13.209.147.231:8888/api/main/user/${userId}`).then((response)=>{
         const data = response.data;
         console.log(data)
         // console.log(data2);
@@ -80,7 +80,7 @@ function MainUser({state,userId}) {
   const [alarmModals, setAlarmModals] = useState([]);
   useEffect(() => {
     axios
-      .get("http://43.201.243.223:8888/api/main/alarm/getAlarmList", {
+      .get("http://13.209.147.231:8888/api/main/alarm/getAlarmList", {
         params: { user_id: userId },
       })
       .then((response) => {

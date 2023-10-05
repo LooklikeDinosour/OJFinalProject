@@ -72,8 +72,8 @@ function MyPage(info) {
                 formData.append('fileId', fileId);
 
                 console.log(formInputData)
-                await axios.post('http://43.201.243.223:8888/api/main/updateInfo', formInputData)
-                const response = await axios.post('http://43.201.243.223:8888/api/main/cloudUpload', formData)
+                await axios.post('http://13.209.147.231:8888/api/main/updateInfo', formInputData)
+                const response = await axios.post('http://13.209.147.231:8888/api/main/cloudUpload', formData)
                 // setProfileImg(response.data)
                 console.log(response)
                 alert("변경완료되었습니다.")
@@ -87,7 +87,7 @@ function MyPage(info) {
                 // 선택한 파일을 초기화합니다.
             }
         }else{
-            await axios.post('http://43.201.243.223:8888/api/main/updateInfo', formInputData)
+            await axios.post('http://13.209.147.231:8888/api/main/updateInfo', formInputData)
             document.body.style.overflow = 'unset';
             setModalIsOpen(false)
             setInput(false)

@@ -17,7 +17,7 @@ function EnglEngSchedule() {
 
 
   useEffect(()=>{
-    axios.get(`http://43.201.243.223:8888/api/main/engleader/getEngInfo/${eng_enid}`)
+    axios.get(`http://13.209.147.231:8888/api/main/engleader/getEngInfo/${eng_enid}`)
     .then(response => console.log(response.data))
 
     setLoading(false);

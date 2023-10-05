@@ -179,7 +179,7 @@ function Login_join(props) {
             return;
         }
         const data = formData
-        const response = await axios.post("http://43.201.243.223:8888/api/main/sing-up", data)
+        const response = await axios.post("http://13.209.147.231:8888/api/main/sing-up", data)
         setErrForm({
             cus_id: response.data.cus_id,
             cus_pw: response.data.cus_pw,
@@ -213,7 +213,7 @@ function Login_join(props) {
             'cus_pw_check': cus_pw_check.value,
             'cus_pw': cus_pw.value
         };
-        const response = await axios.post('http://43.201.243.223:8888/api/main/pw_check', check);
+        const response = await axios.post('http://13.209.147.231:8888/api/main/pw_check', check);
         setPwCheck({ pw_check: response.data.pw_check })
     }
     const [check, setCheck] = useState({
@@ -239,7 +239,7 @@ function Login_join(props) {
             'cus_pw_check': cus_pw_check.value,
             'cus_pw': cus_pw.value
         };
-        const response = await axios.post('http://43.201.243.223:8888/api/main/pw_check', check);
+        const response = await axios.post('http://13.209.147.231:8888/api/main/pw_check', check);
         setPwCheck({ pw_check: response.data.pw_check })
     }
     const idhandleChange = (e) => {
@@ -251,7 +251,7 @@ function Login_join(props) {
     }
     const idCheck = async (e) => {
         const cus_id = { "cus_id": document.querySelector("#cus_id").value };
-        const response = await axios.post("http://43.201.243.223:8888/api/main/idCheck", cus_id)
+        const response = await axios.post("http://13.209.147.231:8888/api/main/idCheck", cus_id)
         if (response.data.message !== undefined) {
             const copy = { ...check, id_massage: response.data.message }
             setCheck(copy)
@@ -275,7 +275,7 @@ function Login_join(props) {
         try {
 
             const cus_email = { "cus_email": document.querySelector("#cus_email").value };
-            const response = await axios.post("http://43.201.243.223:8888/api/main/EmailCheck", cus_email)
+            const response = await axios.post("http://13.209.147.231:8888/api/main/EmailCheck", cus_email)
             setEmailMassage(response.data)
             const copy = { ...check, email_massage: "이메일 사용 가능" }
             setEmailCheckM(copy)
@@ -296,7 +296,7 @@ function Login_join(props) {
     })
     const businessCheck = async () => {
         const cus_business_id = { "cus_business_id": document.querySelector("#cus_business_id").value };
-        const response = await axios.post("http://43.201.243.223:8888/api/main/businessCheck", cus_business_id)
+        const response = await axios.post("http://13.209.147.231:8888/api/main/businessCheck", cus_business_id)
         if (response.data.message !== undefined) {
             const copy = { ...businessCh, message: response.data.message, error: '' }
             setBusinessCh(copy)
@@ -326,7 +326,7 @@ function Login_join(props) {
     const history = useNavigate();
     const handleSingIn = async (e) => {
         try {
-            const response = await axios.post('http://43.201.243.223:8888/api/main/login', singIn);
+            const response = await axios.post('http://13.209.147.231:8888/api/main/login', singIn);
 
             if (response.status == 200) {
 
@@ -405,13 +405,13 @@ function Login_join(props) {
     const emailCheck = async () => {
         try {
 
-            const response = await axios.post("http://43.201.243.223:8888/api/main/emailCheck", idIn)
+            const response = await axios.post("http://13.209.147.231:8888/api/main/emailCheck", idIn)
             console.log(response.data)
             if (response.data == "ok") {
                 setEmailCf("인증번호가 발송되었습니다.")
                 setEmailCfErr("")
                 const email = idIn.cus_email;
-                const response = await axios.post("http://43.201.243.223:8888/api/main/emailSend", { email })
+                const response = await axios.post("http://13.209.147.231:8888/api/main/emailSend", { email })
             } else {
                 // 로그인 실패한 경우
                 // response.data에 서버에서 반환한 메시지가 들어있습니다.\
@@ -430,13 +430,13 @@ function Login_join(props) {
     const emailPwCheck = async () => {
         try {
 
-            const response = await axios.post("http://43.201.243.223:8888/api/main/emailPwCheck", idIn)
+            const response = await axios.post("http://13.209.147.231:8888/api/main/emailPwCheck", idIn)
             console.log(response.data)
             if (response.data == "ok") {
                 setEmailCf("인증번호가 발송되었습니다.")
                 setEmailCfErr("")
                 const email = idIn.cus_email;
-                const response = await axios.post("http://43.201.243.223:8888/api/main/emailSend", { email })
+                const response = await axios.post("http://13.209.147.231:8888/api/main/emailSend", { email })
             } else {
                 // 로그인 실패한 경우
                 // response.data에 서버에서 반환한 메시지가 들어있습니다.\
@@ -456,7 +456,7 @@ function Login_join(props) {
     const idGet = async () => {//아이디 찾기 버튼~!~!
         try {
 
-            const response = await axios.post("http://43.201.243.223:8888/api/main/idGet", idIn)
+            const response = await axios.post("http://13.209.147.231:8888/api/main/idGet", idIn)
             setIdGetCus(response.data);
             setEmailCf("")
         } catch (error) {
@@ -470,7 +470,7 @@ function Login_join(props) {
 
     const pwReset = async () => {
         try {
-            const response = await axios.post("http://43.201.243.223:8888/api/main/PwReset", idIn)
+            const response = await axios.post("http://13.209.147.231:8888/api/main/PwReset", idIn)
             if (response.data === 'ok') {
 
                 const seachPw = document.getElementById('seachPw');
@@ -511,7 +511,7 @@ function Login_join(props) {
     }
     const CheckLogin = async () => {
         try{
-            const response = await axios.post('http://43.201.243.223:8888/api/main/pw_check', formData);
+            const response = await axios.post('http://13.209.147.231:8888/api/main/pw_check', formData);
             if(response.data.pw_check!==""){
                 
                 console.log(response.data)
@@ -531,7 +531,7 @@ function Login_join(props) {
             
         const copy={...formData,cus_id:idIn.cus_id};
          
-        const response = await axios.post("http://43.201.243.223:8888/api/main/passwordReset", copy)
+        const response = await axios.post("http://13.209.147.231:8888/api/main/passwordReset", copy)
         console.log(response.data)
         if(response.data==='ok'){
             setLoginGo(true)
@@ -574,7 +574,7 @@ function Login_join(props) {
             username: 'cloud200',
             password: 'cloud200!',
         }
-        const response = await axios.post('http://43.201.243.223:8888/api/main/login', adminSingIn);
+        const response = await axios.post('http://13.209.147.231:8888/api/main/login', adminSingIn);
         if (response.status == 200) {
 
 
@@ -626,7 +626,7 @@ function Login_join(props) {
             username: 'engL3',
             password: 'engl123!',
         }
-        const response = await axios.post('http://43.201.243.223:8888/api/main/login', engLSingIn);
+        const response = await axios.post('http://13.209.147.231:8888/api/main/login', engLSingIn);
         if (response.status == 200) {
 
 
@@ -678,7 +678,7 @@ function Login_join(props) {
             password: 'eng12345!',
           
         }
-        const response = await axios.post('http://43.201.243.223:8888/api/main/login', engSingIn);
+        const response = await axios.post('http://13.209.147.231:8888/api/main/login', engSingIn);
         if (response.status == 200) {
 
 

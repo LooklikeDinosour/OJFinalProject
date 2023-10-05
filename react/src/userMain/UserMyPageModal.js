@@ -29,7 +29,7 @@ function UserMyPageModal() {
 
   useEffect(() => {
     axios
-      .get("http://43.201.243.223:8888/api/client/UserMyPage")
+      .get("http://13.209.147.231:8888/api/client/UserMyPage")
       .then((response) => setUserMyPage(response.data))
       .catch((error) => console.log(error));
 
@@ -37,7 +37,7 @@ function UserMyPageModal() {
   }, []);
 
   const fileUpload = (file) => {
-    const url = "http://43.201.243.223:8888/api/client/imgupload";
+    const url = "http://13.209.147.231:8888/api/client/imgupload";
     const formData = new FormData();
     formData.append("file", file);
     const config = {

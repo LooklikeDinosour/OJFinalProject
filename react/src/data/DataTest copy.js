@@ -14,7 +14,7 @@ function DataTest() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://43.201.243.223:8888/api/main/servers');
+        const response = await axios.get('http://13.209.147.231:8888/api/main/servers');
         const newServerData = response.data;
         console.log(newServerData);
         const servers = [

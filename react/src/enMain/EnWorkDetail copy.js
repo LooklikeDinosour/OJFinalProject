@@ -9,7 +9,7 @@ function EnWorkDetail({ checkPermission }) {
   const eng_enid = checkPermission.sub;
   //스프링으로부터 데이터 받아오기(엔지니어 아이디별 프로젝트)
   useEffect(() => {
-    axios.get(`http://43.201.243.223:8888/api/main/engineer/workDetail/${eng_enid}`).then((response) => {
+    axios.get(`http://13.209.147.231:8888/api/main/engineer/workDetail/${eng_enid}`).then((response) => {
       setProjectData(response.data);
       console.log(response.data);
     });
@@ -185,7 +185,7 @@ function EnWorkDetail({ checkPermission }) {
       });
       if(file.length !== 0) {
       //작업내역
-      await axios.post("http://43.201.243.223:8888/api/main/engineer/workDetail", workInfoVO); 
+      await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO); 
 
       //작업내역서 첨부파일
       const response = await axios.post(
@@ -206,7 +206,7 @@ function EnWorkDetail({ checkPermission }) {
       }
     
       } else {
-        await axios.post("http://43.201.243.223:8888/api/main/engineer/workDetail", workInfoVO);
+        await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
         alert("작성 완료 했습니다.");
         history("/engineer/inspectionList");
       }
