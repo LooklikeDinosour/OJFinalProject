@@ -6,7 +6,6 @@
 ## 1. 제작 기간 & 참여 인원
 - 2023년 8월 21일 ~ 9월 26일
 - 팀 프로젝트(팀 구성 : 6명)
-- 
 
 </br>
 
@@ -14,19 +13,20 @@
 #### `Back-end`
   - Java 11
   - Spring Boot 2.7.14
-  - Spring security
+  - Spring Security
   - Mybatis 2.3.1
   - JWT
+  - AWS EC2
+  - Node.js 18.16.1
+#### 'Database'  
   - AWS RDS (Aurora/MySQL)
   - AWS S3
-  - AWS EC2
 #### `Front-end`
   - ReactJS 18.2.0
 
 </br>
 
-## 2. 프로젝트 구조
-
+## 3. 프로젝트 구조
 ![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/architecture.png)
 
 
@@ -34,20 +34,24 @@
 </br>
 
 
-## 3. ERD 설계
+## 4. ERD 설계
 ![](https://github.com/LooklikeDinosour/OJFinalProject/blob/5949d48899e9d1b7a108c6bd199294babb59bfbf/CloudOJ_ERD.png)
 
+</br>
 
-## 4. 담당 기능
-- 
-사용자는 단지 컨텐츠의 카테고리를 선택하고, URL만 입력하면 끝입니다.  
-이 단순한 기능의 흐름을 보면, 서비스가 어떻게 동작하는지 알 수 있습니다.  
+## 5. 담당 기능 및 API 명세
+- 엔지니어 리스트 및 마이페이지 조회 기능
+- 엔지니어 점검세부사 작성 및 다중 파일 업로드 기능
+- 엔지니어 점검 목록 조회 및 파일 다운로드 구현 기능
+- 관리자 신규 프로젝트 조회 및 팀 배정 기능 구현
+
+[CloudOJ API 명세](https://docs.google.com/spreadsheets/d/1fEN_aIPfPDlI2uHdG2agFtd14YqBQp__zkUPyM_5Vms/edit#gid=0)
 
 <details>
 <summary><b>핵심 기능 설명 펼치기</b></summary>
 <div markdown="1">
 
-### 4.1. 전체 흐름
+### .1. 전체 흐름
 ![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow1.png)
 
 ### 4.2. 사용자 요청
@@ -104,7 +108,7 @@
 
 </br>
 
-## 5. 핵심 트러블 슈팅
+## 6. 핵심 트러블 슈팅
 ### 5.1. 컨텐츠 필터와 페이징 처리 문제
 - 저는 이 서비스가 페이스북이나 인스타그램 처럼 가볍게, 자주 사용되길 바라는 마음으로 개발했습니다.  
 때문에 페이징 처리도 무한 스크롤을 적용했습니다.
@@ -203,7 +207,7 @@ public Page<Post> findAllByTagName(String tagName, Pageable pageable) {
 
 
 
-## 6. 그 외 트러블 슈팅
+## 7. 그 외 트러블 슈팅
 <details>
 <summary>1. </summary>
 <div markdown="1">
@@ -224,10 +228,11 @@ public Page<Post> findAllByTagName(String tagName, Pageable pageable) {
     
 </br>
 
-## 7. 회고 / 느낀점
-1. 엔지니어와 리더에서 공통작업하는 경우가 발생하여 같은 변수를 만들어서 초반에 코드가 꼬이는 경우가 있었지만,
-   추후 작업에는 공통 작업을 맡은 팀원들과 작업 전에 소통하여 같은 상황을 방지했습니다.
+## 8. 회고 / 느낀점
+1. 관리자 / 엔지니어 / 클라이언트 3 파트로 나눠져서 인원별로 공통작업을 해야했는데 초기 의사소통 부재로 같은 변수를 만들어서 초반에 Git 작업시 꼬이는 경우가 있었지만,
+   문제를 겪은 후 공통 작업을 맡은 팀원들과 작업 전에 소통하여 같은 상황을 방지했습니다.
 2. React.JS를 재학습하면서 프로젝트를 진행하다보니 팀원들끼리도 도움을 주지 못하고 막히는 경우가 있어서
    기능 구현을 하면서 며칠간 막혀있어서 시간을 많이 소비하여 기능구현이 계획보다 미흡했다는 점이 아쉽습니다.
-3. 서버실시간모니터링 솔루션을 지향하여 작업했지만 실제사용경험이 전무하여 기능 완성도 부분에서 미흡했습니다.
-> 1. 
+3. 서버실시간모니터링 솔루션을 목표로 했지만 실제사용경험이 적고, 자료를 적절히 찾지못하여 AWS같은 가상 서버 실시간 모니터링을 구현하지 못했다는 점이 아쉽습니다.
+4. 이번 프로젝트를 통해 요구사항정의서, 기능분해도, 플로우차트를 직접 만들어보니 의사소통에 있어서 문서의 중요성을 알게됐습니다.
+
