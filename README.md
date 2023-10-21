@@ -25,12 +25,21 @@
 
 </br>
 
+## 2. 프로젝트 구조
+
+![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/architecture.png)
+
+
+
+</br>
+
+
 ## 3. ERD 설계
 ![](https://github.com/LooklikeDinosour/OJFinalProject/blob/5949d48899e9d1b7a108c6bd199294babb59bfbf/CloudOJ_ERD.png)
 
 
-## 4. 핵심 기능
-이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
+## 4. 담당 기능
+- 
 사용자는 단지 컨텐츠의 카테고리를 선택하고, URL만 입력하면 끝입니다.  
 이 단순한 기능의 흐름을 보면, 서비스가 어떻게 동작하는지 알 수 있습니다.  
 
