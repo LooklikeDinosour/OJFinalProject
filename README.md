@@ -26,7 +26,7 @@
 </br>
 
 ## 3. ERD 설계
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/final_erd.png)
+![](https://github.com/LooklikeDinosour/OJFinalProject/blob/5949d48899e9d1b7a108c6bd199294babb59bfbf/CloudOJ_ERD.png)
 
 
 ## 4. 핵심 기능
