@@ -1,6 +1,10 @@
 # :pushpin: CloudOJ
->서버작업관리 솔루션 
->[https://cloudoj.dev](http://3.35.150.190:3000/)  
+link : [서버작업관리 솔루션](http://3.35.150.190:3000/) 
+- Test ID
+- 관리자 : cloud200 / cloud200!
+- 엔지니어리더 : engL4 / engl123!
+- 엔지니어 : eng08 / eng12345!
+- 유저 : echopro23 / user12345!
 
 
 ## 1. 제작 기간 & 참여 인원
@@ -29,8 +33,6 @@
 ## 3. 프로젝트 구조
 ![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/architecture.png)
 
-
-
 </br>
 
 
@@ -39,16 +41,15 @@
 
 </br>
 
-## 5. 담당 기능 및 API 명세
-- 엔지니어 리스트 및 마이페이지 조회 기능
-- 엔지니어 점검세부사 작성 및 다중 파일 업로드 기능
-- 엔지니어 점검 목록 조회 및 파일 다운로드 구현 기능
-- 관리자 신규 프로젝트 조회 및 팀 배정 기능 구현
-
-- [CloudOJ API 명세](https://docs.google.com/spreadsheets/d/1fEN_aIPfPDlI2uHdG2agFtd14YqBQp__zkUPyM_5Vms/edit#gid=0)
+## 5. 담당 기능
+- 엔지니어페이지 팀원 보기 및 마이페이지 조회
+- 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
+- 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현
+- 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드
+- 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
 
 <details>
-<summary><b>핵심 기능 설명 펼치기</b></summary>
+<summary><b>담당 기능 설명 펼치기</b></summary>
 <div markdown="1">
 
 ### .1. 전체 흐름
