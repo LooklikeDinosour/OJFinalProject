@@ -22,7 +22,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
   - JWT
   - AWS EC2
   - Node.js 18.16.1
-#### 'Database'  
+#### `Database`  
   - AWS RDS (Aurora/MySQL)
   - AWS S3
 #### `Front-end`
@@ -44,128 +44,54 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ## 5. 담당 기능
 - 엔지니어페이지 팀원 보기 및 마이페이지 조회
 - 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
-- 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현
-- 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드
+- 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현(핵심)
+- 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드(핵심)
 - 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
 
-<details>
-<summary><b>담당 기능 설명 펼치기</b></summary>
-<div markdown="1">
-
-### .1. 전체 흐름
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow1.png)
-
-### 4.2. 사용자 요청
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_vue.png)
-
-- **URL 정규식 체크** :pushpin: [코드 확인](https://github.com/Integerous/goQuality/blob/b587bbff4dce02e3bec4f4787151a9b6fa326319/frontend/src/components/PostInput.vue#L67)
-  - Vue.js로 렌더링된 화면단에서, 사용자가 등록을 시도한 URL의 모양새를 정규식으로 확인합니다.
-  - URL의 모양새가 아닌 경우, 에러 메세지를 띄웁니다.
-
-- **Axios 비동기 요청** :pushpin: [코드 확인]()
-  - URL의 모양새인 경우, 컨텐츠를 등록하는 POST 요청을 비동기로 날립니다.
-
-### 4.3. Controller
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_controller.png)
-
-- **요청 처리** :pushpin: [코드 확인](https://github.com/Integerous/goQuality/blob/b2c5e60761b6308f14eebe98ccdb1949de6c4b99/src/main/java/goQuality/integerous/controller/PostRestController.java#L55)
-  - Controller에서는 요청을 화면단에서 넘어온 요청을 받고, Service 계층에 로직 처리를 위임합니다.
-
-- **결과 응답** :pushpin: [코드 확인]()
-  - Service 계층에서 넘어온 로직 처리 결과(메세지)를 화면단에 응답해줍니다.
-
-### 4.4. Service
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service1.png)
-
-- **Http 프로토콜 추가 및 trim()** :pushpin: [코드 확인]()
-  - 사용자가 URL 입력 시 Http 프로토콜을 생략하거나 공백을 넣은 경우,  
-  올바른 URL이 될 수 있도록 Http 프로토콜을 추가해주고, 공백을 제거해줍니다.
-
-- **URL 접속 확인** :pushpin: [코드 확인]()
-  - 화면단에서 모양새만 확인한 URL이 실제 리소스로 연결되는지 HttpUrlConnection으로 테스트합니다.
-  - 이 때, 빠른 응답을 위해 Request Method를 GET이 아닌 HEAD를 사용했습니다.
-  - (HEAD 메소드는 GET 메소드의 응답 결과의 Body는 가져오지 않고, Header만 확인하기 때문에 GET 메소드에 비해 응답속도가 빠릅니다.)
-
-  ![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service2.png)
-
-- **Jsoup 이미지, 제목 파싱** :pushpin: [코드 확인]()
-  - URL 접속 확인결과 유효하면 Jsoup을 사용해서 입력된 URL의 이미지와 제목을 파싱합니다.
-  - 이미지는 Open Graphic Tag를 우선적으로 파싱하고, 없을 경우 첫 번째 이미지와 제목을 파싱합니다.
-  - 컨텐츠에 이미지가 없을 경우, 미리 설정해둔 기본 이미지를 사용하고, 제목이 없을 경우 생략합니다.
-
-
-### 4.5. Repository
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_repo.png)
-
-- **컨텐츠 저장** :pushpin: [코드 확인]()
-  - URL 유효성 체크와 이미지, 제목 파싱이 끝난 컨텐츠는 DB에 저장합니다.
-  - 저장된 컨텐츠는 다시 Repository - Service - Controller를 거쳐 화면단에 송출됩니다.
-
-</div>
-</details>
-
-</br>
-
-## 6. 핵심 트러블 슈팅
-### 5.1. 컨텐츠 필터와 페이징 처리 문제
-- 저는 이 서비스가 페이스북이나 인스타그램 처럼 가볍게, 자주 사용되길 바라는 마음으로 개발했습니다.  
-때문에 페이징 처리도 무한 스크롤을 적용했습니다.
-
-- 하지만 [무한스크롤, 페이징 혹은 “더보기” 버튼? 어떤 걸 써야할까](https://cyberx.tistory.com/82) 라는 글을 읽고 무한 스크롤의 단점들을 알게 되었고,  
-다양한 기준(카테고리, 사용자, 등록일, 인기도)의 게시물 필터 기능을 넣어서 이를 보완하고자 했습니다.
-
-- 그런데 게시물이 필터링 된 상태에서 무한 스크롤이 동작하면,  
-필터링 된 게시물들만 DB에 요청해야 하기 때문에 아래의 **기존 코드** 처럼 각 필터별로 다른 Query를 날려야 했습니다.
 
 <details>
-<summary><b>기존 코드</b></summary>
+<summary><b>핵심 기능 상세 설명</b></summary>
 <div markdown="1">
 
-~~~java
-/**
- * 게시물 Top10 (기준: 댓글 수 + 좋아요 수)
- * @return 인기순 상위 10개 게시물
- */
-public Page<PostResponseDto> listTopTen() {
+### 5.1. 프로젝트 전체 흐름 (프로젝트 구조처럼 흐름 한번 다시 만들기)
 
-    PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "rankPoint", "likeCnt");
-    return postRepository.findAll(pageRequest).map(PostResponseDto::new);
-}
 
-/**
- * 게시물 필터 (Tag Name)
- * @param tagName 게시물 박스에서 클릭한 태그 이름
- * @param pageable 페이징 처리를 위한 객체
- * @return 해당 태그가 포함된 게시물 목록
- */
-public Page<PostResponseDto> listFilteredByTagName(String tagName, Pageable pageable) {
 
-    return postRepository.findAllByTagName(tagName, pageable).map(PostResponseDto::new);
-}
+### 5.2. 핵심 기능 구현
+- 점검세부사항 작성 및 다중 파일업로드 기능은 점검 사항을 기록하는 핵심적인 기능
+- 다중 파일 업로드는 업로드한 파일이 몇 개인지만 볼 수 있는 <input multiple>형식이 아니라 파일추가 버튼으로 <input=file>을 각각 추가하여 무엇을 업로드 했는지 볼 수 있게 구현
+- 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장했고, 프론트에서 1차적으로 파일 추가와 첨부 숫자가 미 일치시 작성이 되지 않게 제한조건, 백엔드에서 다중파일에 전달되지 않은 값은 제거하게 2차로 코드 설정함
 
-// ... 게시물 필터 (Member) 생략 
+### 프론트엔드 코드
+- [관련코드](react/src/enMain/EnWorkDetail.js)
+  
+### 백엔드 코드
+- 점검세부사항 코드
+- [관련 코드1 엔지니어 Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/controller/EngineerController.java#L88)
+- [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/service/EngineerServiceImpl.java#L43C1-L43C1)
+  
+- 업로드 관련 코드
+- [관련 코드1 AWS Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsApiController.java#L146)
+- [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsServiceImpl.java#L64)
+- [관련 코드3 점검 세부사항 작성 SQL](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
+- [관련 코드4 다중파일 업로드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
 
-/**
- * 게시물 필터 (Date)
- * @param createdDate 게시물 박스에서 클릭한 날짜
- * @return 해당 날짜에 등록된 게시물 목록
- */
-public List<PostResponseDto> listFilteredByDate(String createdDate) {
+### 5.2.1 기능 구현을 하면서 마주친 문제
+1. 한 개 작업 상세 내역에 점검에 해당하는 서버들의 작업내역을 작성하려고 했지만, 프로젝트당 서버의 갯수가 유동적이어서 그에 맞는 기능 설계가 필요했음
+  그래서 프로젝트 명, 날짜, 작성자, 작업시간 등 공통부분과 각 서버당 기록되는 점검사항 등의 개별 부분으로 기록이 진행되어야 하는 문제 발생
 
-    // 등록일 00시부터 24시까지
-    LocalDateTime start = LocalDateTime.of(LocalDate.parse(createdDate), LocalTime.MIN);
-    LocalDateTime end = LocalDateTime.of(LocalDate.parse(createdDate), LocalTime.MAX);
+- 문제 해결
+  list 형식으로 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현 
+- [해당 코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
 
-    return postRepository
-                    .findAllByCreatedAtBetween(start, end)
-                    .stream()
-                    .map(PostResponseDto::new)
-                    .collect(Collectors.toList());
-    }
-~~~
+2. 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 만들면서 각각 PK 만들어져
+  최초 형성된 첫 서버 외에는 다운로드 기능이 구현되지 않았음
+
+- 문제해결
+  PK를 복제하여 연결할 수 있다는 SQL문을 찾아서 사용했지만, 참조 무결성을 무시하여 PK관련 에러가 발생했고,
+  File 테이블에 UUID 컬럼을 한개 생성하여 해당 UUID를 복사하여 INSERT 구문에 키로 전달 받게 코드를 구현하여 해결
+- [해당 코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
+  
 
 </div>
 </details>
@@ -178,28 +104,7 @@ public List<PostResponseDto> listFilteredByDate(String createdDate) {
 <summary><b>개선된 코드</b></summary>
 <div markdown="1">
 
-~~~java
-/**
- * 게시물 필터 (Tag Name)
- */
-@Override
-public Page<Post> findAllByTagName(String tagName, Pageable pageable) {
 
-    QueryResults<Post> results = queryFactory
-            .selectFrom(post)
-            .innerJoin(postTag)
-                .on(post.idx.eq(postTag.post.idx))
-            .innerJoin(tag)
-                .on(tag.idx.eq(postTag.tag.idx))
-            .where(tag.name.eq(tagName))
-            .orderBy(post.idx.desc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-            .fetchResults();
-
-    return new PageImpl<>(results.getResults(), pageable, results.getTotal());
-}
-~~~
 
 </div>
 </details>
