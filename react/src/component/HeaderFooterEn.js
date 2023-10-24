@@ -240,7 +240,7 @@ function HeaderFooterEn(props) {
                     <li className="sidebar-item">
                       <NavLink
                         className="sidebar-link "
-                        to={`/engineer/newList/${props.userId}`}
+                        to={`/engineer/newList`}
                         style={({ isActive }) => (isActive ? ms : undefined)}
                       >
 
