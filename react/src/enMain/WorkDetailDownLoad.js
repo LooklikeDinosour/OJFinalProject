@@ -106,7 +106,7 @@ console.log(eachData);
                   file.map((file, index) => (
                       <tr key={file.file_id}>
                         <td>{index + 1}</td>
-                        <td>{file.upload_date}</td>
+                        <td>{file.file_name}</td>
                         <td>{file.user_id}</td>
                         <td>
                           {file.file_name != null ? (
