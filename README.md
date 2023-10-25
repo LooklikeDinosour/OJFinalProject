@@ -63,47 +63,19 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 - 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장했고, 프론트에서 1차적으로 파일 추가와 첨부 숫자가 미 일치시 작성이 되지 않게 제한조건, 백엔드에서 다중파일에 전달되지 않은 값은 제거하게 2차로 코드 설정함
 
 ### 프론트엔드 코드
+:pushpin:점검세부사항 페이지
 - [관련코드](react/src/enMain/EnWorkDetail.js)
   
 ### 백엔드 코드
-- 점검세부사항 코드
+:pushpin:점검세부사항 코드
 - [관련 코드1 엔지니어 Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/controller/EngineerController.java#L88)
 - [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/service/EngineerServiceImpl.java#L43C1-L43C1)
   
-- 업로드 관련 코드
+:pushpin:업로드 관련 코드
 - [관련 코드1 AWS Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsApiController.java#L146)
 - [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsServiceImpl.java#L64)
 - [관련 코드3 점검 세부사항 작성 SQL](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
 - [관련 코드4 다중파일 업로드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
-
-### 5.2.1 기능 구현을 하면서 마주친 문제
-1. 한 개 작업 상세 내역에 점검에 해당하는 서버들의 작업내역을 작성하려고 했지만, 프로젝트당 서버의 갯수가 유동적이어서 그에 맞는 기능 설계가 필요했음
-  그래서 프로젝트 명, 날짜, 작성자, 작업시간 등 공통부분과 각 서버당 기록되는 점검사항 등의 개별 부분으로 기록이 진행되어야 하는 문제 발생
-
-- 문제 해결
-  list 형식으로 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현 
-- [해당 코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
-
-2. 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 만들면서 각각 PK 만들어져
-  최초 형성된 첫 서버 외에는 다운로드 기능이 구현되지 않았음
-
-- 문제해결
-  PK를 복제하여 연결할 수 있다는 SQL문을 찾아서 사용했지만, 참조 무결성을 무시하여 PK관련 에러가 발생했고,
-  File 테이블에 UUID 컬럼을 한개 생성하여 해당 UUID를 복사하여 INSERT 구문에 키로 전달 받게 코드를 구현하여 해결
-- [해당 코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
-  
-
-</div>
-</details>
-
-- 이 때 카테고리(tag)로 게시물을 필터링 하는 경우,  
-각 게시물은 최대 3개까지의 카테고리(tag)를 가질 수 있어 해당 카테고리를 포함하는 모든 게시물을 질의해야 했기 때문에  
-- 아래 **개선된 코드**와 같이 QueryDSL을 사용하여 다소 복잡한 Query를 작성하면서도 페이징 처리를 할 수 있었습니다.
-
-<details>
-<summary><b>개선된 코드</b></summary>
-<div markdown="1">
-
 
 
 </div>
@@ -111,26 +83,60 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 </br>
 
+## 6. 핵심 트러블 슈팅 및 문제 해결
+
+### 1. 문제
+- 한 개 작업 상세 내역에 점검에 해당하는 서버들의 작업내역을 작성하려고 했지만, 프로젝트당 서버의 갯수가 유동적이어서 그에 맞는 기능 설계가 필요했음
+  그래서 프로젝트 명, 날짜, 작성자, 작업시간 등 공통부분과 각 서버당 기록되는 점검사항 등의 개별 부분으로 기록이 진행되어야 하는 문제 발생
+
+📌 **해결**
+- list 형식으로 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현 
+- [코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
+
+### 2. 문제
+- 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 만들면서 각각 PK 만들어져
+  최초 형성된 첫 서버 외에는 다운로드 기능이 구현되지 않았음
+
+📌 **해결**
+- PK를 복제하여 연결할 수 있다는 SQL문을 찾아서 사용했지만, 참조 무결성을 무시하여 PK관련 에러가 발생했고,
+  File 테이블에 UUID 컬럼을 한개 생성하여 해당 UUID를 복사하여 INSERT 구문에 키로 전달 받게 코드를 구현하여 해결
+- [코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
+
+</br>
 
 
 ## 7. 그 외 트러블 슈팅
-<details>
-<summary>1. </summary>
-<div markdown="1">
 
+<details>
+<summary>1. polyfill 에러 발생 </summary>
+<div markdown="1">
+  
+  - 같은 페이지를 작업하던 팀원들은 에러가 나지 않았지만, 갑자기 나에게만 발생하는 것을 보고 전체 페이지를 읽어보니 오타로 발생한 알파벳이 express.js에 자동으로 import되면서 생긴문제
+  - 리액트 polyfill 9개 에러 발생하였고, 오타로 발생한 알파벳이 express.js에 자동으로 import되면서 생긴 오류 import 구문 제거로 해결
 
 </div>
 </details>
 
 <details>
-<summary>2. </summary>
+  
+<summary>2. java.lang.IllegalStateException: Malformed \uxxxx encoding 발생 </summary>
 <div markdown="1">
   
-  - main.js 파일에 `Vue.config.devtools = true` 추가로 해결
-  - [https://github.com/vuejs/vue-devtools/issues/190](https://github.com/vuejs/vue-devtools/issues/190)
+  - application.properties에 경로 복사하고 상기 에러가 발생하였고, 경로 / -> \ 로 바꿔서 해결
   
 </div>
 </details>
+
+<details>
+<summary>3.스프링부트에서 데이터 전송은 성공했는데 리액트에는 전달이 안되는 문제(error) 발생</summary>
+<div markdown="1">
+
+  -  스프링부트에서 컨트롤러 공용주소를 @RequestMapping()처리한 것을 리액트 프록시 설정에서 주소를 지정해줘서 해결함
+  -  [코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/react/src/setupProxy.js#L6C3-L6C3)
+
+</div>  
+</details>
+
     
 </br>
 
