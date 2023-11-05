@@ -35,7 +35,7 @@ function HeaderFooterEn(props) {
   const getEnInfo=async()=>{
       console.log(props.checkPermission.sub)
     const en_enid={"en_id":props.checkPermission.sub}
-    const response=await axios.post("http://13.209.147.231:8888/api/main/engineer/getEngineerInfo",en_enid)
+    const response=await axios.post("/api/main/engineer/getEngineerInfo",en_enid)
     setEng(response.data)
     console.log(eng)
   }
@@ -111,7 +111,7 @@ function HeaderFooterEn(props) {
           <nav className="navbar top-navbar navbar-expand-lg navbar-light">
             <div className="navbar-header">
               <div className="navbar-brand">
-              <Link to="/engineer"> {eng.team_id}</Link>           
+                <a href="index.html"> {eng.team_id} </a>
               </div>
 
 
@@ -174,7 +174,10 @@ function HeaderFooterEn(props) {
                                     </span>
                                 </button>
                   <Modal className="modal-content" overlayClassName="modal-overlay" isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-
+                    <Link to="#" className="contentIcon">
+                      <div><ProfileIcon /></div>
+                      <span>프로필 보기</span>
+                    </Link>
 
                     <Link to="#" onClick={logout} className="contentIcon">
                       <div><LogOutIcon /></div>
@@ -240,7 +243,7 @@ function HeaderFooterEn(props) {
                     <li className="sidebar-item">
                       <NavLink
                         className="sidebar-link "
-                        to={`/engineer/newList`}
+                        to="/engineer/newList"
                         style={({ isActive }) => (isActive ? ms : undefined)}
                       >
 

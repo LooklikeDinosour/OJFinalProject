@@ -16,7 +16,7 @@ function EnServerDetailModal(props, areaID) {
 
   useEffect(()=>{
     if(modalIsOpen){
-      axios.post('http://13.209.147.231:8888/api/main/engineer/inspectionList2',{serverId:props.serverId})
+      axios.post("http://13.209.147.231:8888/api/main/engineer/inspectionList2",{serverId:props.serverId})
       .then(response => {
         setData(response.data);
         console.log(response.data);
