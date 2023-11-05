@@ -68,15 +68,208 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
   
 ### 백엔드 코드
 :pushpin:점검세부사항 코드
-- [관련 코드1 엔지니어 Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/controller/EngineerController.java#L88)
-- [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/engineer/service/EngineerServiceImpl.java#L43C1-L43C1)
+<details>
+<summary><b>관련 코드1 엔지니어 Controller</b></summary>
+<div markdown="1">
+
+~~~java
+  //
+
+	// 작업상세내역에서 엔지니어별로 배정받은 프로젝트 불러오는 기능
+	@GetMapping("/engineer/workDetail/{eng_enid}")
+	public ResponseEntity<Map<String, Object>> enWorkDetailToInfo(@PathVariable String eng_enid) {
+
+		List<EngSerProInfoWorkInfoVO> eSPIWlist = engineerService.engProInfo(eng_enid);
+		List<ServerVO> serverList = engineerService.serverList();
+
+		Map<String, Object> proInfoMap = new HashMap<>();
+		proInfoMap.put("eSPIWlist", eSPIWlist);
+		proInfoMap.put("serverList", serverList);
+
+		return new ResponseEntity<>(proInfoMap, HttpStatus.OK);
+	}
+
+	// 작업상세내역서 등록 기능
+	@PostMapping("/engineer/workDetail")
+	public ResponseEntity<Integer> registWorkLogs(@RequestBody List<WorkInfoVO> ServerDetailsArray) {
+
+		int result = engineerService.registWorkLog(ServerDetailsArray);
+		System.out.println(result);
+
+		// 작업 로그 등록이 성공하면 성공 응답을 반환합니다.
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+~~~
+
+</div>
+</details>
+
+<details>
+<summary><b>관련 코드2 ServiceImpl</b></summary>
+<div markdown="1">
+
+~~~java
+
+  //작업상세내역서에서 각 엔지니어에게 배정된 프로젝트 불러오기
+  @Override
+	public List<EngSerProInfoWorkInfoVO> engProInfo(String eng_enid) {
+
+		return engineerMapper.engProInfo(eng_enid);
+	}
+  @Override
+	public List<ServerVO> serverList() {
+
+		return engineerMapper.serverList();
+	}
+
+  //서버 작업상세내역 리액트에서 받아와서 넘기기
+	@Override
+	public int registWorkLog(List<WorkInfoVO> ServerDetailsArray) {
+
+		return engineerMapper.registWorkLog(ServerDetailsArray);}
+
+~~~
+
+</div>
+</details>
   
 :pushpin:업로드 관련 코드
-- [관련 코드1 AWS Controller](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsApiController.java#L146)
-- [관련 코드2 ServiceImpl](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/java/com/server/cloud/s3/AwsServiceImpl.java#L64)
-- [관련 코드3 점검 세부사항 작성 SQL](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
-- [관련 코드4 다중파일 업로드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
+<details>
+<summary><b>관련 코드1 AWS Controller</b></summary>
+<div markdown="1">
 
+~~~java
+@PostMapping("/api/main/cloudMultiUpload")
+	public ResponseEntity<Integer> multiUpload(@RequestParam("file_data") List<MultipartFile> fileList,
+			@RequestParam("userId") String userId) {
+		Instant now = Instant.now();
+		Timestamp timestamp = Timestamp.from(now);
+		//System.out.println(fileId);
+		System.out.println(fileList.toString());
+		System.out.println(userId);
+
+
+		fileList = fileList.stream().filter( f -> f.isEmpty() == false).collect(Collectors.toList());
+		int result = 0;
+		try {
+			List<FileVO> list = new ArrayList<>();
+			for (MultipartFile file : fileList) {
+
+				String originName=file.getOriginalFilename();
+				byte[]originData=file.getBytes();
+				String objectURI =s3.putS3Object(originName,originData);
+				FileVO fileVO=new FileVO().builder()
+						.file_name(originName)
+						.file_path(objectURI)
+						.file_type(file.getContentType())
+						.user_id(userId)
+						.upload_date(timestamp)
+						.build();
+				
+				list.add(fileVO);
+				}
+
+				result = awsService.setFiles(list, userId);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		return new ResponseEntity<>(result,HttpStatus.OK);
+
+	}
+
+~~~
+
+</div>
+</details>
+
+<details>
+<summary><b>관련 코드2 ServiceImpl</b></summary>
+<div markdown="1">
+
+~~~java
+	@Override
+	public int setFiles(List<FileVO> list, String user_id) {
+	
+		return awsMapper.setFiles(list, user_id);
+	}
+~~~
+
+</div>
+</details>
+
+<details>
+<summary><b>관련 코드3 점검 세부사항 작성 SQL</b></summary>
+<div markdown="1">
+
+~~~sql
+	<insert id="registWorkLog" parameterType="java.util.List">
+		 <selectKey keyProperty="work_filenum" resultType="String" order="BEFORE">
+	        SELECT UUID()
+	     </selectKey>
+		insert into WORKINFO
+		(work_filenum,
+		work_date,
+		work_division,
+		work_time,
+		work_cpu,
+		work_ram,
+		work_hdd,
+		work_note,
+		work_estimate,
+		work_status,
+		server_id,
+		eng_enid,
+		pro_id)
+		values
+		<foreach collection="list" item="workInfo" separator=",">
+			(#{work_filenum},
+			#{workInfo.work_date},
+			#{workInfo.work_division},
+			#{workInfo.work_time},
+			#{workInfo.work_cpu},
+			#{workInfo.work_ram},
+			#{workInfo.work_hdd},
+			#{workInfo.work_note},
+			#{workInfo.work_estimate},
+			#{workInfo.work_status},
+			#{workInfo.server_id},
+			#{workInfo.eng_enid},
+			#{workInfo.pro_id}
+			)
+		</foreach>
+	</insert>
+
+~~~
+
+</div>
+</details>
+
+<details>
+<summary><b>관련 코드4 다중파일 업로드 sql </b></summary>
+<div markdown="1">
+
+~~~sql
+    <insert id="setFiles" >
+      <selectKey keyProperty="work_filenum" resultType="String"
+         order="BEFORE">
+         SELECT WORK_FILENUM FROM WORKINFO WHERE ENG_ENID = #{user_id}
+         ORDER BY WORK_DATE DESC LIMIT 1;
+      </selectKey>
+
+         insert into
+         FILE(file_name,file_path,file_type,upload_date,user_num,user_id) 
+         values
+
+         <foreach collection="list" item="item" separator=",">      
+            (#{item.file_name}, #{item.file_path}, #{item.file_type}, #{item.upload_date}, #{work_filenum}, #{item.user_id})
+         </foreach>
+     </insert> 
+
+~~~
+
+</div>
+</details>
 
 </div>
 </details>
@@ -91,7 +284,52 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 📌 **해결**
 - list 형식으로 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현 
-- [코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/EngineerMapper.xml#L64)
+<details>
+<summary><b>코드</b></summary>
+<div markdown="1">
+
+~~~sql
+<insert id="registWorkLog" parameterType="java.util.List">
+		 <selectKey keyProperty="work_filenum" resultType="String" order="BEFORE">
+	        SELECT UUID()
+	     </selectKey>
+		insert into WORKINFO
+		(work_filenum,
+		work_date,
+		work_division,
+		work_time,
+		work_cpu,
+		work_ram,
+		work_hdd,
+		work_note,
+		work_estimate,
+		work_status,
+		server_id,
+		eng_enid,
+		pro_id)
+		values
+		<foreach collection="list" item="workInfo" separator=",">
+			(#{work_filenum},
+			#{workInfo.work_date},
+			#{workInfo.work_division},
+			#{workInfo.work_time},
+			#{workInfo.work_cpu},
+			#{workInfo.work_ram},
+			#{workInfo.work_hdd},
+			#{workInfo.work_note},
+			#{workInfo.work_estimate},
+			#{workInfo.work_status},
+			#{workInfo.server_id},
+			#{workInfo.eng_enid},
+			#{workInfo.pro_id}
+			)
+		</foreach>
+	</insert>
+~~~
+
+</div>
+</details>
+
 
 ### 2. 문제
 - 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 만들면서 각각 PK 만들어져
@@ -100,7 +338,32 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 📌 **해결**
 - PK를 복제하여 연결할 수 있다는 SQL문을 찾아서 사용했지만, 참조 무결성을 무시하여 PK관련 에러가 발생했고,
   File 테이블에 UUID 컬럼을 한개 생성하여 해당 UUID를 복사하여 INSERT 구문에 키로 전달 받게 코드를 구현하여 해결
-- [코드](https://github.com/LooklikeDinosour/OJFinalProject/blob/892c08cfb98ef43fc36332d02e4409187235f14f/springboot/src/main/resources/mapper/AwsMapper.xml#L97C2-L97C2)
+<details>
+<summary><b>코드</b></summary>
+<div markdown="1">
+
+~~~sql
+    <insert id="setFiles" >
+      <selectKey keyProperty="work_filenum" resultType="String"
+         order="BEFORE">
+         SELECT WORK_FILENUM FROM WORKINFO WHERE ENG_ENID = #{user_id}
+         ORDER BY WORK_DATE DESC LIMIT 1;
+      </selectKey>
+
+         insert into
+         FILE(file_name,file_path,file_type,upload_date,user_num,user_id) 
+         values
+
+         <foreach collection="list" item="item" separator=",">      
+            (#{item.file_name}, #{item.file_path}, #{item.file_type}, #{item.upload_date}, #{work_filenum}, #{item.user_id})
+         </foreach>
+     </insert> 
+
+~~~
+
+</div>
+</details>
+
 
 </br>
 
