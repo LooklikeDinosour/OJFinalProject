@@ -67,9 +67,10 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 - [관련코드](react/src/enMain/EnWorkDetail.js)
   
 ### 백엔드 코드
-:pushpin:점검세부사항 코드
+:pushpin:<b>점검세부사항 코드</b>
+
 <details>
-<summary><b>관련 코드1 엔지니어 Controller</b></summary>
+<summary>관련 코드1 엔지니어 Controller</summary>
 <div markdown="1">
 
 ~~~java
@@ -105,7 +106,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary><b>관련 코드2 ServiceImpl</b></summary>
+    <summary>관련 코드2 ServiceImpl</summary>
 <div markdown="1">
 
 ~~~java
@@ -133,9 +134,10 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </div>
 </details>
   
-:pushpin:업로드 관련 코드
+:pushpin:<b>업로드 관련 코드</b>
+			     
 <details>
-<summary><b>관련 코드1 AWS Controller</b></summary>
+<summary>관련 코드1 AWS Controller</summary>
 <div markdown="1">
 
 ~~~java
@@ -184,7 +186,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary><b>관련 코드2 ServiceImpl</b></summary>
+<summary>관련 코드2 ServiceImpl</summary>
 <div markdown="1">
 
 ~~~java
@@ -199,7 +201,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary><b>관련 코드3 점검 세부사항 작성 SQL</b></summary>
+<summary>관련 코드3 점검 세부사항 작성 SQL</summary>
 <div markdown="1">
 
 ~~~sql
@@ -246,7 +248,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary><b>관련 코드4 다중파일 업로드 sql </b></summary>
+<summary>관련 코드4 다중파일 업로드 SQL </summary>
 <div markdown="1">
 
 ~~~sql
@@ -285,7 +287,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 📌 **해결**
 - list 형식으로 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현 
 <details>
-<summary><b>코드</b></summary>
+<summary>코드</summary>
 <div markdown="1">
 
 ~~~sql
@@ -339,7 +341,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 - PK를 복제하여 연결할 수 있다는 SQL문을 찾아서 사용했지만, 참조 무결성을 무시하여 PK관련 에러가 발생했고,
   File 테이블에 UUID 컬럼을 한개 생성하여 해당 UUID를 복사하여 INSERT 구문에 키로 전달 받게 코드를 구현하여 해결
 <details>
-<summary><b>코드</b></summary>
+<summary>코드</summary>
 <div markdown="1">
 
 ~~~sql
