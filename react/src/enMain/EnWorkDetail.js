@@ -4,7 +4,7 @@ import "../userMain/User.css";
 import "../enMain/EnCss.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { fi } from 'date-fns/locale';
+
 
 function EnWorkDetail({ checkPermission }) {
     const eng_enid = checkPermission.sub;
@@ -20,7 +20,7 @@ function EnWorkDetail({ checkPermission }) {
 
     useEffect(() => {
         const today = new Date();
-        const year = today.getFullYear();
+        const year = today.getFullYear();ㄴ
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
         const day = today.getDate().toString().padStart(2, "0");
 
@@ -213,10 +213,14 @@ function EnWorkDetail({ checkPermission }) {
                     }
                 )
                 if (response.data === fileList.length) {
+
+
                     alert("작성 완료 했습니다.");
                     history("/engineer/inspectionList");
                 } else {
-                    alert("잘못된 접근 입니다.");
+                    alert("파일을 첨부해주세요요.");
+
+
                 }
 
             } else {
