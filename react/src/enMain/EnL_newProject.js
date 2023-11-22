@@ -31,7 +31,7 @@ function EnL_newProject({ checkPermission }) {
         console.error("Error fetching data:", error);
       });
   }, [eng_enid]);
-ㄴ
+
   const handlePageChange = (page) => { // 페이지 핸들링
     setCurrentPage(page);
   };
