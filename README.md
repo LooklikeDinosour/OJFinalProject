@@ -69,6 +69,8 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ### 백엔드 코드
 :pushpin:<b>점검세부사항 코드</b>
 
+시퀀스 다이어그램
+![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/%EC%9E%91%EC%97%85%20%EC%83%81%EC%84%B8%20%EB%82%B4%EC%97%AD%EC%84%9C%20SD.png)
 <details>
 <summary>관련 코드1 엔지니어 Controller</summary>
 <div markdown="1">
