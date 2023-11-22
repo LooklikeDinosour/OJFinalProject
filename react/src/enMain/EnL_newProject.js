@@ -10,7 +10,7 @@ import Pagination from "react-js-pagination";
 import SearchIcon from "../engineerLeader/SearchIcon";
 
 function EnL_newProject({ checkPermission }) {
-  const eng_enid = checkPermission.sub;
+  
   const [first, setFirst] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 정보 저장
   const itemsPerPage = 10; // 페이지당 아이템 수
@@ -18,7 +18,7 @@ function EnL_newProject({ checkPermission }) {
 
   const [data, setData] = useState([]);
   console.log(data);
-
+  const eng_enid = checkPermission.sub;
   useEffect(() => {
     axios
       .get(`http://13.209.147.231:8888/api/main/engineer/newList/${eng_enid}`)
@@ -30,7 +30,7 @@ function EnL_newProject({ checkPermission }) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [eng_enid]);
 
   const handlePageChange = (page) => { // 페이지 핸들링
     setCurrentPage(page);

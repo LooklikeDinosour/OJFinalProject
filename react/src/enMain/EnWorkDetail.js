@@ -184,7 +184,6 @@ function EnWorkDetail({ checkPermission }) {
 
     const submit = async () => {
         try {
-            console.log(fileList);
             const formData = new FormData();
             fileList.forEach((selectedFile, index) => {
                 formData.append("file_data", selectedFile);
@@ -192,35 +191,31 @@ function EnWorkDetail({ checkPermission }) {
             formData.append("userId", eng_enid);
             formData.append("pro_id", workInfoVO.pro_id);
 
-            console.log("pro_id -----------", workInfoVO.pro_id);
-
             formData.forEach((value, key) => {
                 console.log(key + " " + value);
             });
-            if (fileList.length !== 0) {
-                //작업내역
-                await axios.post("http://13.124.230.133:8888/api/main/engineer/workDetail", workInfoVO);
+            if (fileList.length !== 0) { //첨부파일이 있는경우
+
+                //상세 점검
+                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
 
                 //작업내역서 첨부파일
                 const response = await axios.post(
-                    "http://13.124.230.133:8888/api/main/cloudMultiUpload",
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data", // 파일 업로드 시 필요한 헤더 설정
-                        },
-                        data: formData,
-                    }
+                  "http://13.209.147.231:8888/api/main/cloudMultiUpload",
+                  formData,
+                  {
+                      headers: {
+                          "Content-Type": "multipart/form-data", // 파일 업로드 시 필요한 헤더 설정
+                      },
+                      data: formData,
+                  }
                 )
-                if (response.data === fileList.length) {
-                    alert("작성 완료 했습니다.");
-                    history("/engineer/inspectionList");
-                } else {
-                    alert("잘못된 접근 입니다.");
-                }
+                  alert("작성 완료 했습니다.");
+                  history("/engineer/inspectionList"); 
 
+               
             } else {
-                await axios.post("http://13.124.230.133:8888/api/main/engineer/workDetail", workInfoVO);
+                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
                 alert("작성 완료 했습니다.");
                 history("/engineer/inspectionList");
             }
@@ -251,7 +246,7 @@ function EnWorkDetail({ checkPermission }) {
             const copy = { ...updateStatus, "workStatus": e.currentTarget.innerHTML, "server_id": server_id }
             console.log(copy)
             // 서버로 상태값을 보냅니다.
-            axios.post("http://13.124.230.133:8888/api/main/engineer/updateWorkStatus", copy);
+            axios.post("http://13.209.147.231:8888/api/main/engineer/updateWorkStatus", copy);
 
             alert(`작업상태가 ${e.currentTarget.innerHTML}으로 변경되었습니다.`)
             e.currentTarget.style.backgroundColor = "rgb(255 81 81)"
@@ -528,32 +523,6 @@ function EnWorkDetail({ checkPermission }) {
                                                                     점검시작
                                                                 </button>
                                                             </td>
-                                                            {/* <td>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="work_status"
-                                    value="유"
-                                    checked={statusInputValues[index] === "유"}
-                                    onChange={(e) =>
-                                      handleInputChange2(e, index)
-                                    }
-                                  />
-                                  유
-                                </label>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="work_status"
-                                    value="무"
-                                    checked={statusInputValues[index] === "무"}
-                                    onChange={(e) =>
-                                      handleInputChange2(e, index)
-                                    }
-                                  />
-                                  무
-                                </label>
-                              </td> */}
                                                         </tr>
                                                     ))}
                                             </tbody>

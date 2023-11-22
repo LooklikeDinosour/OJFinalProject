@@ -35,7 +35,7 @@ function HeaderFooterEn(props) {
   const getEnInfo=async()=>{
       console.log(props.checkPermission.sub)
     const en_enid={"en_id":props.checkPermission.sub}
-    const response=await axios.post("/api/main/engineer/getEngineerInfo",en_enid)
+    const response=await axios.post("http://13.209.147.231:8888/api/main/engineer/getEngineerInfo",en_enid)
     setEng(response.data)
     console.log(eng)
   }
