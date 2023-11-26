@@ -89,6 +89,7 @@ public class EngineerController {
 	@PostMapping("/engineer/workDetail")
 	public ResponseEntity<Integer> registWorkLogs(@RequestBody List<WorkInfoVO> ServerDetailsArray) {
 
+		System.out.println(ServerDetailsArray.toString());
 		int result = engineerService.registWorkLog(ServerDetailsArray);
 		System.out.println(result);
 

@@ -1,6 +1,6 @@
 package com.server.cloud.command;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,7 +19,9 @@ public class WorkInfoVO {
 	
 	private String work_num;
 	private String work_filenum;
-	private Date work_date;
+	@JsonFormat
+	(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private Timestamp work_date;	
 	private String work_division;
 	@JsonFormat
 	(shape = JsonFormat.Shape.STRING, pattern = "hh:mm", timezone = "Asia/Seoul")
@@ -39,6 +41,12 @@ public class WorkInfoVO {
     private String pro_name; //프로젝트명
     private String server_name; //서버 이름
     private String server_status;
+	@Override
+	public String toString() {
+		return "WorkInfoVO [work_date=" + work_date + ", work_time=" + work_time + "]";
+	}
+    
+    
 
 	
 	

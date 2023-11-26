@@ -154,7 +154,7 @@ function EnServerDetailModal(props, areaID) {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{workInfo2.work_division}</td>
-                      <td>{new Date(workInfo2.work_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
+                      <td>{new Date(workInfo2.work_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
                       <td>{props.engName}</td>
                       <td>{workInfo2.work_cpu}</td>
                       <td>{workInfo2.work_ram}</td>

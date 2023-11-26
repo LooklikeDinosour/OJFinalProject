@@ -58,7 +58,7 @@ function AdUserMyPageModal(props) {
   // }, []);
 
   // const fileUpload = (file) => {
-  //   const url = 'http://localhost:8888/api/client/imgupload';
+  //   const url = 'http://13.209.147.231:8888/api/client/imgupload';
   //   const formData = new FormData();
   //   formData.append('file', file);
   //   const config = {

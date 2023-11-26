@@ -16,17 +16,19 @@ function EnWorkDetail({ checkPermission }) {
     }, []);
 
     //작업일자 현재 날짜 설정하는 함수
-    const [currentDate, setCurrentDate] = useState(new Date());
+    function formatDateTime() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const day = today.getDate().toString().padStart(2, "0");
+      const hours = today.getHours().toString().padStart(2, "0");
+      const minutes = today.getMinutes().toString().padStart(2, "0");
+      const seconds = today.getSeconds().toString().padStart(2, "0");
 
-    useEffect(() => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0");
-        const day = today.getDate().toString().padStart(2, "0");
-
-        const formattedDate = `${year}-${month}-${day}`;
-        setCurrentDate(formattedDate);
-    }, []);
+      const formatDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      return formatDateTime;
+    }
+    
 
     //프로젝트 선택시 해당 프로젝트에 속한 서버만 불러오기
     const [projectData, setProjectData] = useState({
@@ -135,7 +137,7 @@ function EnWorkDetail({ checkPermission }) {
             eng_enid: checkPermission.sub,
             pro_id: server.pro_id,
             server_id: server.server_id,
-            work_date: currentDate,
+            work_date: formatDateTime,
             work_division: selectedCheckTypes[server.server_id] || "",
             work_time: workDetail.work_time || "",
             work_cpu: cpuInputValues[index] || "",
@@ -197,11 +199,11 @@ function EnWorkDetail({ checkPermission }) {
             if (fileList.length !== 0) { //첨부파일이 있는경우
 
                 //상세 점검
-                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
+                await axios.post("/api/main/engineer/workDetail", workInfoVO);
 
                 //작업내역서 첨부파일
                 const response = await axios.post(
-                  "http://13.209.147.231:8888/api/main/cloudMultiUpload",
+                  "/api/main/cloudMultiUpload",
                   formData,
                   {
                       headers: {
@@ -215,7 +217,7 @@ function EnWorkDetail({ checkPermission }) {
 
                
             } else {
-                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
+                await axios.post("/api/main/engineer/workDetail", workInfoVO);
                 alert("작성 완료 했습니다.");
                 history("/engineer/inspectionList");
             }
@@ -246,7 +248,7 @@ function EnWorkDetail({ checkPermission }) {
             const copy = { ...updateStatus, "workStatus": e.currentTarget.innerHTML, "server_id": server_id }
             console.log(copy)
             // 서버로 상태값을 보냅니다.
-            axios.post("http://13.209.147.231:8888/api/main/engineer/updateWorkStatus", copy);
+            axios.post("/api/main/engineer/updateWorkStatus", copy);
 
             alert(`작업상태가 ${e.currentTarget.innerHTML}으로 변경되었습니다.`)
             e.currentTarget.style.backgroundColor = "rgb(255 81 81)"
@@ -353,13 +355,9 @@ function EnWorkDetail({ checkPermission }) {
                                                 <div className="form-group mb-3">
                                                     <div>
                                                         <div className="form-group">
-                                                            <input
-                                                                type="date"
-                                                                className="form-control"
-                                                                name="work_date"
-                                                                value={currentDate}
-                                                                onChange={(e) => setCurrentDate(e.target.value)}
-                                                            />
+                                                            <div name="work_date">
+                                                                  {formatDateTime()}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
