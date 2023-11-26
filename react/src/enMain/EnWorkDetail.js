@@ -4,7 +4,6 @@ import "../userMain/User.css";
 import "../enMain/EnCss.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { fi } from 'date-fns/locale';
 
 function EnWorkDetail({ checkPermission }) {
     const eng_enid = checkPermission.sub;
