@@ -136,7 +136,7 @@ function EnWorkDetail({ checkPermission }) {
             eng_enid: checkPermission.sub,
             pro_id: server.pro_id,
             server_id: server.server_id,
-            work_date: formatDateTime,
+            work_date: formatDateTime(),
             work_division: selectedCheckTypes[server.server_id] || "",
             work_time: workDetail.work_time || "",
             work_cpu: cpuInputValues[index] || "",
