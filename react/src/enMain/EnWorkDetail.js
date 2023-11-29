@@ -24,7 +24,7 @@ function EnWorkDetail({ checkPermission }) {
       const minutes = today.getMinutes().toString().padStart(2, "0");
       const seconds = today.getSeconds().toString().padStart(2, "0");
 
-      const formatDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+      const formatDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       return formatDateTime;
     }
     
