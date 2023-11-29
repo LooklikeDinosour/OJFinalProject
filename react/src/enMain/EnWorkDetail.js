@@ -24,7 +24,7 @@ function EnWorkDetail({ checkPermission }) {
       const minutes = today.getMinutes().toString().padStart(2, "0");
       const seconds = today.getSeconds().toString().padStart(2, "0");
 
-      const formatDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      const formatDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
       return formatDateTime;
     }
     
@@ -198,11 +198,10 @@ function EnWorkDetail({ checkPermission }) {
             if (fileList.length !== 0) { //첨부파일이 있는경우
 
                 //상세 점검
-                await axios.post("/api/main/engineer/workDetail", workInfoVO);
+                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
 
                 //작업내역서 첨부파일
-                const response = await axios.post(
-                  "/api/main/cloudMultiUpload",
+                const response = await axios.post("http://13.209.147.231:8888/api/main/cloudMultiUpload",
                   formData,
                   {
                       headers: {
@@ -210,19 +209,20 @@ function EnWorkDetail({ checkPermission }) {
                       },
                       data: formData,
                   }
-                )
+                );
                   alert("작성 완료 했습니다.");
                   history("/engineer/inspectionList"); 
 
                
             } else {
-                await axios.post("/api/main/engineer/workDetail", workInfoVO);
+                await axios.post("http://13.209.147.231:8888/api/main/engineer/workDetail", workInfoVO);
                 alert("작성 완료 했습니다.");
                 history("/engineer/inspectionList");
             }
 
         } catch (error) {
             console.error("파일 업로드 및 작업 상세 내역 제출 오류:", error);
+            
         }
     };
 
@@ -247,7 +247,7 @@ function EnWorkDetail({ checkPermission }) {
             const copy = { ...updateStatus, "workStatus": e.currentTarget.innerHTML, "server_id": server_id }
             console.log(copy)
             // 서버로 상태값을 보냅니다.
-            axios.post("/api/main/engineer/updateWorkStatus", copy);
+            axios.post("http://13.209.147.231:8888/api/main/engineer/updateWorkStatus", copy);
 
             alert(`작업상태가 ${e.currentTarget.innerHTML}으로 변경되었습니다.`)
             e.currentTarget.style.backgroundColor = "rgb(255 81 81)"
