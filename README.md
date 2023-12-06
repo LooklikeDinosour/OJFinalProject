@@ -103,7 +103,6 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 	@PostMapping("/engineer/workDetail")
 	public ResponseEntity<Integer> registWorkLogs(@RequestBody List<WorkInfoVO> ServerDetailsArray) {
 		int result = engineerService.registWorkLog(ServerDetailsArray);
-		// 작업 로그 등록이 성공하면 성공 응답을 반환합니다.
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 ~~~
