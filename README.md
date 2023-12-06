@@ -41,13 +41,11 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 </br>
 
-## 5. 사용언어 및 담당 기능
-#### 사용 언어
-- <b>Front-End</b> : ReactJS 
-- <b>Back-End</b> : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS)
-#### 담당 기능
+## 5. 사용 기술 및 담당 기능
+#### Front-End : ReactJS
+#### Back_End : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS) 
 1. 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드(핵심)
-2. 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현(핵심)
+2. 엔지니어페이지 점검 목록 파일 다운로드 구현(핵심)
 3. 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
 4. 엔지니어페이지 팀원 보기 및 마이페이지 조회
 5. 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
@@ -57,27 +55,27 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 <summary><b>핵심 기능 상세 설명</b></summary>
 <div markdown="1">
 
-### 5.1. 프로젝트 전체 흐름 (프로젝트 구조처럼 흐름 한번 다시 만들기)
 
+### 5.1. 핵심 기능 구현
 
-
-### 5.2. 핵심 기능 구현
-- #### <b>2. 점검세부사항 작성 및 다중 파일업로드</b>
-	- 엔지니어가 서버 점검날 서버의 상태를 점검하고 기록하는 기능
-	- 점검 중 점검관련 문서 및 사진 등 관련 자료들을 첨부할 수 있게 다중 업로드 기능 구현
-	- 다중 파일 업로드는 업로드한 파일이 몇 개인지만 볼 수 있는 <input = multiple>형식이 아니라
-  	  <input = file> 타입을 업로드가 필요한 자료 수 에 맞춰서 파일 추가하게하여 기록하기 전에 무엇을 업로드 했는지 엔지니어가 재확인할 수 있게 구현
-	- 업로드 파일은 Storage의 확장성을 위해 AWS S3에 저장
+### 1. 점검세부사항 작성 및 다중 파일 업로드 기능
+   - 엔지니어가 서버 점검한 내용을 기록할 수 있는 기능
+   - 점검사항외에 부가적인 문서, 사진 등을 첨부할 수 있게 다중 업로드 기능 구현
+   - 다중 파일 업로드는 업로드 파일 갯수만 볼 수 있던 <input = multiple>형식이 아니라
+     <input=file>형식으로 파일 추가버튼을 통해 상황에 맞게 업로드 할 수 있게하고, 무엇을 업로드할지 다시 확인할 수 있게 구현
+   - 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장
+     
+### 시퀀스 다이어그램
+![](https://github.com/LooklikeDinosour/OJFinalProject/blob/7b4406f17dfc2c0a3e46a1b64e4bacbeb37032d7/%EC%9E%91%EC%97%85%20%EC%83%81%EC%84%B8%20%EB%82%B4%EC%97%AD%EC%84%9C%20SD%20%EC%88%98%EC%A0%95v1.png)
 
 ### 프론트엔드 코드
-:pushpin:점검세부사항 페이지
+:pushpin:<b>점검세부사항 페이지</b>
 - [관련코드](react/src/enMain/EnWorkDetail.js)
-  
+ 
 ### 백엔드 코드
 :pushpin:<b>점검세부사항 코드</b>
 
-시퀀스 다이어그램
-![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/%EC%9E%91%EC%97%85%20%EC%83%81%EC%84%B8%20%EB%82%B4%EC%97%AD%EC%84%9C%20SD.png)
+
 <details>
 <summary>관련 코드1 엔지니어 Controller</summary>
 <div markdown="1">
@@ -85,28 +83,23 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ~~~java
   //
 
-	// 작업상세내역에서 엔지니어별로 배정받은 프로젝트 불러오는 기능
+// 작업상세내역에서 엔지니어별로 배정받은 프로젝트 불러오는 기능
 	@GetMapping("/engineer/workDetail/{eng_enid}")
 	public ResponseEntity<Map<String, Object>> enWorkDetailToInfo(@PathVariable String eng_enid) {
-
-		//프로젝트와 서버정보 불러오기
 		List<EngSerProInfoWorkInfoVO> eSPIWlist = engineerService.engProInfo(eng_enid);
 		List<ServerVO> serverList = engineerService.serverList();
 
 		Map<String, Object> proInfoMap = new HashMap<>();
 		proInfoMap.put("eSPIWlist", eSPIWlist);
 		proInfoMap.put("serverList", serverList);
-
+	
 		return new ResponseEntity<>(proInfoMap, HttpStatus.OK);
 	}
 
-	// 작업상세내역서 등록 기능
+// 작업상세내역서 등록 기능
 	@PostMapping("/engineer/workDetail")
 	public ResponseEntity<Integer> registWorkLogs(@RequestBody List<WorkInfoVO> ServerDetailsArray) {
-
 		int result = engineerService.registWorkLog(ServerDetailsArray);
-		System.out.println(result);
-
 		// 작업 로그 등록이 성공하면 성공 응답을 반환합니다.
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
@@ -122,70 +115,62 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ~~~java
 
   //작업상세내역서에서 각 엔지니어에게 배정된 프로젝트 불러오기
-  @Override
+	@Override
 	public List<EngSerProInfoWorkInfoVO> engProInfo(String eng_enid) {
-
 		return engineerMapper.engProInfo(eng_enid);
 	}
-  @Override
+	@Override
 	public List<ServerVO> serverList() {
-
 		return engineerMapper.serverList();
 	}
 
   //서버 작업상세내역 리액트에서 받아와서 넘기기
 	@Override
 	public int registWorkLog(List<WorkInfoVO> ServerDetailsArray) {
-
 		return engineerMapper.registWorkLog(ServerDetailsArray);}
-
-~~~
+	
+	~~~
 
 </div>
 </details>
-  
+ 
 :pushpin:<b>업로드 관련 코드</b>
-			     
+     
 <details>
 <summary>관련 코드1 AWS Controller</summary>
 <div markdown="1">
 
 ~~~java
-@PostMapping("/api/main/cloudMultiUpload")
+	@PostMapping("/api/main/cloudMultiUpload")
 	public ResponseEntity<Integer> multiUpload(@RequestParam("file_data") List<MultipartFile> fileList,
-			@RequestParam("userId") String userId) {
+ 						   @RequestParam("userId") String userId) {
 		Instant now = Instant.now();
 		Timestamp timestamp = Timestamp.from(now);
-
+		
 		fileList = fileList.stream().filter( f -> f.isEmpty() == false).collect(Collectors.toList());
 		int result = 0;
 		try {
 			List<FileVO> list = new ArrayList<>();
 			for (MultipartFile file : fileList) {
-
 				String originName=file.getOriginalFilename();
 				byte[]originData=file.getBytes();
 				String objectURI =s3.putS3Object(originName,originData);
 				FileVO fileVO=new FileVO().builder()
-						.file_name(originName)
-						.file_path(objectURI)
-						.file_type(file.getContentType())
-						.user_id(userId)
-						.upload_date(timestamp)
-						.build();
-				
-				list.add(fileVO);
-				}
-
-				result = awsService.setFiles(list, userId);
-			}catch (Exception e) {
-				e.printStackTrace();
+							  .file_name(originName)
+							  .file_path(objectURI)
+							  .file_type(file.getContentType())
+							  .user_id(userId)
+							  .upload_date(timestamp)
+							  .build();
+	
+			list.add(fileVO);
 			}
-
+			result = awsService.setFiles(list, userId);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(result,HttpStatus.OK);
-
 	}
-
 ~~~
 
 </div>
@@ -198,7 +183,6 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ~~~java
 	@Override
 	public int setFiles(List<FileVO> list, String user_id) {
-	
 		return awsMapper.setFiles(list, user_id);
 	}
 ~~~
@@ -212,9 +196,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 ~~~sql
 	<insert id="registWorkLog" parameterType="java.util.List">
-		 <selectKey keyProperty="work_filenum" resultType="String" order="BEFORE">
-	        SELECT UUID()
-	     </selectKey>
+		<selectKey keyProperty="work_filenum" resultType="String" order="BEFORE">
+		        SELECT UUID()
+		     </selectKey>
 		insert into WORKINFO
 		(work_filenum,
 		work_date,
@@ -230,7 +214,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 		eng_enid,
 		pro_id)
 		values
-		<foreach collection="list" item="workInfo" separator=",">
+			<foreach collection="list" item="workInfo" separator=",">
 			(#{work_filenum},
 			#{workInfo.work_date},
 			#{workInfo.work_division},
@@ -245,7 +229,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 			#{workInfo.eng_enid},
 			#{workInfo.pro_id}
 			)
-		</foreach>
+			</foreach>
 	</insert>
 
 ~~~
@@ -258,26 +242,89 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 <div markdown="1">
 
 ~~~sql
-    <insert id="setFiles" >
-      <selectKey keyProperty="work_filenum" resultType="String"
-         order="BEFORE">
-         SELECT WORK_FILENUM FROM WORKINFO WHERE ENG_ENID = #{user_id}
-         ORDER BY WORK_DATE DESC LIMIT 1;
-      </selectKey>
-
-         insert into
-         FILE(file_name,file_path,file_type,upload_date,user_num,user_id) 
-         values
-
-         <foreach collection="list" item="item" separator=",">      
-            (#{item.file_name}, #{item.file_path}, #{item.file_type}, #{item.upload_date}, #{work_filenum}, #{item.user_id})
-         </foreach>
-     </insert> 
+	    <insert id="setFiles" >
+	      <selectKey keyProperty="work_filenum" resultType="String"
+	         order="BEFORE">
+	         SELECT WORK_FILENUM FROM WORKINFO WHERE ENG_ENID = #{user_id}
+	         ORDER BY WORK_DATE DESC LIMIT 1;
+	      </selectKey>
+	
+	         insert into
+	         FILE(file_name,file_path,file_type,upload_date,user_num,user_id) 
+	         values
+	         <foreach collection="list" item="item" separator=",">     
+	            (#{item.file_name}, #{item.file_path}, #{item.file_type}, #{item.upload_date}, #{work_filenum}, #{item.user_id})
+	         </foreach>
+	     </insert> 
 
 ~~~
 
 </div>
 </details>
+
+</br>
+
+### 2. 엔지니어페이지 점검 목록 파일 다운로드 기능
+
+
+### 프론트엔드 코드
+:pushpin: <b>점검목록 및 각 서버 상세보기 페이지</b>
+- [관련코드 점검 목록](react/src/enMain/InspectionList.js)
+- [관련코드 서버 상세보기](react/src/enMain/EnServerDetailModal.js)
+ 
+### 백엔드 코드
+:pushpin:<b>다운로드 코드</b>
+<details>
+<summary>관련 코드1 AwsController </summary>
+<div markdown="1">
+
+~~~java
+	@GetMapping("/api/main/getFiles")
+	public ResponseEntity<?> getFiles(String work_filenum) {
+		if(work_filenum != null) {
+			List<FileVO> files = awsService.getFiles(work_filenum);
+			return new ResponseEntity<>(files, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("파일 없음", HttpStatus.OK);
+		}
+	}
+~~~
+
+</div>
+</details>
+
+<details>
+<summary>관련 코드2 AwsServiceImpl </summary>
+<div markdown="1">
+
+~~~java
+// 멀티파일 다운로드
+	@Override
+	public List<FileVO> getFiles(String work_filenum) {
+		return awsMapper.getFiles(work_filenum);
+	}
+~~~
+
+
+</div>
+</details>
+
+<details>
+<summary>관련 코드3 AwsMapper </summary>
+<div markdown="1">
+
+~~~sql
+	    <select id="getFiles" resultType="com.server.cloud.s3.FileVO">
+	        SELECT * FROM FILE 
+	        WHERE USER_NUM = #{work_filenum};
+	    </select>
+~~~
+
+
+</div>
+</details>
+
+
 
 </div>
 </details>
