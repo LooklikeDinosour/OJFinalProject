@@ -43,8 +43,8 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 ## 5. 사용 기술 및 담당 기능
 ### 사용 기술
-	#### Front-End : ReactJS
-	#### Back_End : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS) 
+	Front-End : ReactJS
+	Back_End : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS) 
 
 ### 담당 기능
 	1. 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드(핵심)
