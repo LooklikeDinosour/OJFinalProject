@@ -41,12 +41,16 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 </br>
 
-## 5. 담당 기능
-- 엔지니어페이지 팀원 보기 및 마이페이지 조회
-- 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
-- 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현(핵심)
-- 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드(핵심)
-- 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
+## 5. 사용언어 및 담당 기능
+#### 사용 언어
+- <b>Front-End</b> : ReactJS 
+- <b>Back-End</b> : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS)
+#### 담당 기능
+1. 엔지니어페이지 점검세부사항 작성 및 다중 파일 업로드(핵심)
+2. 엔지니어페이지 점검 목록 조회 및 파일 다운로드 구현(핵심)
+3. 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
+4. 엔지니어페이지 팀원 보기 및 마이페이지 조회
+5. 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
 
 
 <details>
@@ -58,9 +62,12 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 
 ### 5.2. 핵심 기능 구현
-- 점검세부사항 작성 및 다중 파일업로드 기능은 점검 사항을 기록하는 핵심적인 기능
-- 다중 파일 업로드는 업로드한 파일이 몇 개인지만 볼 수 있는 <input multiple>형식이 아니라 파일추가 버튼으로 <input=file>을 각각 추가하여 무엇을 업로드 했는지 볼 수 있게 구현
-- 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장했고, 프론트에서 1차적으로 파일 추가와 첨부 숫자가 미 일치시 작성이 되지 않게 제한조건, 백엔드에서 다중파일에 전달되지 않은 값은 제거하게 2차로 코드 설정함
+- #### <b>2. 점검세부사항 작성 및 다중 파일업로드</b>
+	- 엔지니어가 서버 점검날 서버의 상태를 점검하고 기록하는 기능
+	- 점검 중 점검관련 문서 및 사진 등 관련 자료들을 첨부할 수 있게 다중 업로드 기능 구현
+	- 다중 파일 업로드는 업로드한 파일이 몇 개인지만 볼 수 있는 <input = multiple>형식이 아니라
+  	  <input = file> 타입을 업로드가 필요한 자료 수 에 맞춰서 파일 추가하게하여 기록하기 전에 무엇을 업로드 했는지 엔지니어가 재확인할 수 있게 구현
+	- 업로드 파일은 Storage의 확장성을 위해 AWS S3에 저장
 
 ### 프론트엔드 코드
 :pushpin:점검세부사항 페이지
@@ -82,6 +89,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 	@GetMapping("/engineer/workDetail/{eng_enid}")
 	public ResponseEntity<Map<String, Object>> enWorkDetailToInfo(@PathVariable String eng_enid) {
 
+		//프로젝트와 서버정보 불러오기
 		List<EngSerProInfoWorkInfoVO> eSPIWlist = engineerService.engProInfo(eng_enid);
 		List<ServerVO> serverList = engineerService.serverList();
 
@@ -148,10 +156,6 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 			@RequestParam("userId") String userId) {
 		Instant now = Instant.now();
 		Timestamp timestamp = Timestamp.from(now);
-		//System.out.println(fileId);
-		System.out.println(fileList.toString());
-		System.out.println(userId);
-
 
 		fileList = fileList.stream().filter( f -> f.isEmpty() == false).collect(Collectors.toList());
 		int result = 0;
