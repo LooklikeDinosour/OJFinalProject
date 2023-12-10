@@ -1,3 +1,4 @@
+
 # :pushpin: CloudOJ
 link : [서버작업관리 솔루션](http://3.35.150.190:3000/) 
 - Test ID
@@ -25,10 +26,11 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 </br>
 
-## 2. 사용 기술
+## 2. 사용 기술 및 개발 환경
+### 사용기술
 #### `Back-end`
   - Java 11
-  - Spring Boot 2.7.14
+  - Spring Boot 2.7.14(Gradle)
   - Spring Security
   - Mybatis 2.3.1
   - JWT
@@ -40,6 +42,12 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 #### `Front-end`
   - ReactJS 18.2.0
 
+### 개발 환경
+- STS4
+- GitHub
+- MySql
+- AWS
+- Visual Studio Code
 </br>
 
 ## 3. 프로젝트 구조
