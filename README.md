@@ -57,7 +57,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 
 ## 4. ERD 설계
-![](https://github.com/LooklikeDinosour/OJFinalProject/blob/5949d48899e9d1b7a108c6bd199294babb59bfbf/CloudOJ_ERD.png)
+![](https://github.com/LooklikeDinosour/OJFinalProject/blob/master/FINALPROJECT_ERD.png)
 
 </br>
 
