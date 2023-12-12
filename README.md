@@ -63,15 +63,16 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 ## 5. 사용 기술 및 담당 기능
 ### 사용 기술
-	#### Front-End : ReactJS
-	#### Back_End : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS)
+	Front-End : ReactJS
+	Back_End : Java, Spring Boot, MyBatis, AWS (EC2, S3, RDS)
 
 ### 담당 기능 (담당 파트 화면 구현, 기능 구현 동시 진행)
 	프로젝트 기여도 : 20%
 	1. 엔지니어페이지 점검세부사항 작성 및 AWS S3 BUCKET에 다중 파일 업로드 및 다운로드 구현
-	2. 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
-	3. 엔지니어페이지 팀원 보기 및 마이페이지 조회
-	4. 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
+ 	2. axios 라이브러리를 통해 비동기통신을 통해 api 호출 및 응답을 아래 기능 구현
+	- 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
+	- 엔지니어페이지 팀원 보기 및 마이페이지 조회
+	- 엔지니어페이지 프로젝트 관리 - 내 프로젝트 보기
 
 
 <details>
@@ -92,11 +93,12 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ### 시퀀스 다이어그램
 ![](https://github.com/LooklikeDinosour/OJFinalProject/blob/7b4406f17dfc2c0a3e46a1b64e4bacbeb37032d7/%EC%9E%91%EC%97%85%20%EC%83%81%EC%84%B8%20%EB%82%B4%EC%97%AD%EC%84%9C%20SD%20%EC%88%98%EC%A0%95v1.png)
 
-### 프론트엔드 코드
+### 업로드 코드
+#### 프론트엔드 코드
 :pushpin:<b>점검세부사항 페이지</b>
 - [관련코드](react/src/enMain/EnWorkDetail.js)
  
-### 백엔드 코드
+#### 백엔드 코드
 :pushpin:<b>점검세부사항 코드</b>
 
 
@@ -290,11 +292,8 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 </br>
-
-### 2. 엔지니어페이지 점검 목록 파일 다운로드 기능
-	- 엔지니어가 점검 상세 내역서에서 업로드 했던 다중 업로드된 파일들을 받을 수 있는 기능
   
-
+### 다운로드 코드
 
 ### 프론트엔드 코드
 :pushpin: <b>점검목록 및 각 서버 상세보기 페이지</b>
@@ -363,6 +362,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ## 6. 핵심 트러블 슈팅 및 문제 해결
 
 ### 1. 점검 세부사항 등록
+
+---
+
 📌 **문제점**
 - 초기구현의도 : 엔지니어는 한 개의 작업 상세 내역 페이지에 배정받은 서버들의 작업내역을 작성
 - 문제 발생 : 눈으로 보기에는 한 개의 페이지라서 한 개의 게시글만 기록될 것 같았지만, 점검받는 서버의 갯수만큼 게시글이 형성이 되는 구조 
@@ -370,10 +372,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 
 📌 **해결**
-- list 형식으로 데이터를 받아서 foreach 구문을 사용하여 각 서버에 공통부분과 개별부분이 기록되게 구현
-<details>
-<summary>코드</summary>
-<div markdown="1">
+- list 형식으로 데이터를 받아서 foreach 구문을 사용하여 list의 size만큼 반복하여 DB에 저장
 
 ~~~sql
 <insert id="registWorkLog" parameterType="java.util.List">
@@ -413,19 +412,21 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 		</foreach>
 	</insert>
 ~~~
-📌 **문제점**
+
+
+### 2. 업로드 기능 추가
+
+---
+
+📌 **문제점 1**
 - 회의를 통해 초기에 없던 업로드 기능 추가
-- 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 만들면서 각각 PK 만들어져
+- 업로드를 구현시 해당 글의 PK로 파일을 업로드 및 다운로드 구현을 해야 하는데, 위에서 구현한 다중 게시글이 각각 다른 게시글을 생성하며 각각 PK 생성되어
   최초 형성된 첫 점검 기록 외에는 다운로드 기능이 구현되지 않았음
 - Key를 복제하여 연결할 수 있는 아래와 같은 SQL문을 찾아서 사용했지만, PK관련 개체 무결성 에러가 발생  
   
 
-📌 **해결**
+📌 **해결 1**
 - WorkInfo 테이블에 컬럼(WORK_FILENUM)을 추가 생성하여 <selectKey>구문을 추가하여 동일한 UUID를 복사하여 INSERT 구문에 Foreach를 통해 Key값을 복사하여 모든 게시글에 저장하였고, 해당 Key값을 PK대신 keyProperty로 "work_filenum"을 지정하여 업로드되는 FILE들 DB저장시 같이 Insert해줌으로 모든 점검 목록에서도 다운로드를 받을 수 있도록 해결
-
-<details>
-<summary>코드</summary>
-<div markdown="1">
 
 ~~~sql
     <insert id="setFiles" >
@@ -445,6 +446,37 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
      </insert> 
 
 ~~~
+
+---
+
+📌 **문제점 2**
+- 업로드 기능 추가 이전에 작업 상세 내역 기록은 해당날짜로만 기록하기로 설정하여 Date 클래스를 사용
+- 다운로드 테스트를 위해 동일 날짜 서버기록을 여러 엔지니어 ID에서 형성하는데 Type이 Date로 되어있어서 날짜로만 저장되다보니 해당 날짜 첫 게시물외에 다른 게시글에도 첫 게시물에 업로드한 파일들이 잘못 응답
+~~~sql
+      <selectKey keyProperty="work_filenum" resultType="String"
+         order="BEFORE">
+         SELECT WORK_FILENUM FROM WORKINFO WHERE ENG_ENID = #{user_id}
+         ORDER BY WORK_DATE DESC LIMIT 1;
+      </selectKey>
+~~~
+  
+
+📌 **해결 2**
+- SQL문은 상기 코드대로 사용
+- WorkInfoVO 변수 타입을 Date -> Timestamp 방식으로 바꾸고, @JsonFormat 애노테이션을 통해 들어오는 값의 형식을 지정, WorkInfo 테이블 work_date type도 Date -> Timestamp로 변경하여 해결
+
+WorkInfoVO 클래스 타입 변경
+~~~java
+ 	@JsonFormat
+	(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private Timestamp work_date;
+~~~
+MySql 타입 변경
+~~~sql
+	ALTER TABLE WORKINFO 
+	CHANGE COLUMN `WORK_DATE` `WORK_DATE` TIMESTAMP NULL DEFAULT NULL ;
+~~~
+
 
 </div>
 </details>
