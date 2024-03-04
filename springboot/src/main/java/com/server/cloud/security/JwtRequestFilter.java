@@ -19,7 +19,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         
         String headers = request.getHeader("Authorization");
         // 헤더가 없거나 Bearer로 시작되지 않다면?
-        
+
         String requestUri = request.getRequestURI();
         System.out.println(requestUri);
         if (requestUri.startsWith("/api/main/")) {

@@ -1,0 +1,29 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            maxElementsInMemory="1000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+    />
+
+    <cache
+            name="engineerMapper.newList"
+            maxElementsInMemory="1000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            statistics="false"
+            timeToIdleSeconds="275400"
+            timeToLiveSeconds="275400"
+            overflowToDisk="false"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU"/>
+
+
+</ehcache>

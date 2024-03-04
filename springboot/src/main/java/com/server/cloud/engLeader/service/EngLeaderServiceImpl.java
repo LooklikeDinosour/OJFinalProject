@@ -19,8 +19,11 @@ import com.server.cloud.command.WorkInfoVO;
 @Service("engLeaderService")
 public class EngLeaderServiceImpl implements EngLeaderService{
 	
-	@Autowired
-	private EngLeaderMapper engLeaderMapper;
+	private final EngLeaderMapper engLeaderMapper;
+
+	public EngLeaderServiceImpl (EngLeaderMapper engLeaderMapper) {
+		this.engLeaderMapper = engLeaderMapper;
+	}
 
 
 	@Override

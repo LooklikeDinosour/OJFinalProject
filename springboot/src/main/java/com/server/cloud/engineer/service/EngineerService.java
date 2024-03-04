@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.server.cloud.command.EngSerProInfoWorkInfoVO;
 import com.server.cloud.command.EngineerVO;
-import com.server.cloud.command.ProjectCusVO;
 import com.server.cloud.command.ScheduleVO;
 import com.server.cloud.command.ServerVO;
 import com.server.cloud.command.WorkInfoVO;
@@ -14,8 +13,9 @@ public interface EngineerService {
 
 	//내 프로젝트 리스트
 	public List<EngSerProInfoWorkInfoVO> newList(String eng_enid);
-	
-	//서버 
+
+
+	// 엔지니어 담당 프로젝트 리스트 조회
 	public List<EngSerProInfoWorkInfoVO> engProInfo(String eng_enid);
 	
 	
@@ -27,9 +27,7 @@ public interface EngineerService {
 
 
 	//점검목록 리스트
-//	public List<WorkInfoVO> inspectionList(WorkInfoVO workInfoVO);
 	public List<WorkInfoVO> inspectionListMap(String eng_enid);
-//	public List<ServerVO> serverInfo();
 
 	//점검목록 리스트 서버모달
 	public Map<String, Object> serverDetailModal(String server_id);

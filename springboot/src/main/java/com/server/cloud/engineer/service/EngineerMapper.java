@@ -24,11 +24,8 @@ public interface EngineerMapper {
 	//엔지니어 리스트
 	public List<EngineerVO> engineerListMap(String eng_enid);
 
-	//점검목록 리스트
-//	public List<WorkInfoVO> inspectionList(WorkInfoVO workInfoVO);
 	public List<WorkInfoVO> inspectionListMap(String eng_enid);
-//	public List<ServerVO> serverInfo();
-	
+
 	//점검목록 리스트 서버모달
 	public Map<String, Object> serverDetailModal(String server_id);
 	//점검목록 리스트 작업목록 모달
