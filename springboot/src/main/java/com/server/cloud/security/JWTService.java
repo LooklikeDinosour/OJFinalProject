@@ -68,7 +68,8 @@ public class JWTService {
 			Algorithm alg= Algorithm.HMAC256(secret);//생성한거 비교해보면 됨~
 			
 			JWTVerifier verifier= JWT.require(alg).build();//token을 검증할 객체
-			
+
+
 			
 			verifier.verify(token);//토큰검사 - 만료기간 or 토큰위조가 발생하면 throws처리 된다.
 			

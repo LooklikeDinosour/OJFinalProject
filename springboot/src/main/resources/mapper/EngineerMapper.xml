@@ -100,7 +100,7 @@
 
 	<select id="engineerListMap"
 		resultType="EngineerVO">
-		select e.*, t.team_id
+		select e.eng_name, e.eng_email, e.eng_rank, e.eng_phone, t.team_id
 		from ENGINEER e
 		join ENG_TEAM t on e.team_num = t.team_num
 		where e.team_num = (
