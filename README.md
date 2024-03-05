@@ -351,11 +351,93 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 </div>
 </details>
+--
+
+### 2. axios 라이브러리로 비동기통신의 api 호출 및 응답을 사용하여 조회 기능 구현
+- 프로젝트 조회기능 Ehcache를 사용하여 Vuser:20명 기준 TPS 4.4 -> 3,306 (약 750배) 성능 개선
+- 개선전
+  ![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/fe965e1c-e5b9-4a94-93e1-45b956931dee)
+- cache 적용 후
+  ![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/7fa92389-8c81-4eb6-969a-bee58a73efec)
 
 
+#### 프론트엔드 코드
+:pushpin:<b>프로젝트 페이지</b>
+- [관련코드](react/src/enMain/EnL_newProject.js)
+ 
+#### 백엔드 코드
+:pushpin:<b>프로젝트 조회 코드</b>
+
+<details>
+<summary>관련 코드1 엔지니어 Controller</summary>
+<div markdown="1">
+
+~~~java
+
+	//팀원 프로젝트 리스트 (cache)
+	@GetMapping("/engineer/newList/{eng_enid}")
+	public ResponseEntity<List<EngSerProInfoWorkInfoVO>> newList(@PathVariable String eng_enid) {
+		List<EngSerProInfoWorkInfoVO> CusProList = engineerService.newList(eng_enid);
+		return new ResponseEntity<>(CusProList, HttpStatus.OK);
+	}
+~~~
 
 </div>
 </details>
+
+<details>
+<summary>관련 코드1 엔지니어 ServiceImpl, ehcache.xml</summary>
+<div markdown="1">
+
+~~~java
+
+	@Override
+	@Cacheable(value = "engineerMapper.newList", key = "#eng_enid")
+	public List<EngSerProInfoWorkInfoVO> newList(String eng_enid) {
+		return engineerMapper.newList(eng_enid);
+	}
+
+~~~
+
+~~~xml
+	<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            maxElementsInMemory="1000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+    />
+
+    <cache
+            name="engineerMapper.newList"
+            maxElementsInMemory="1000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            statistics="false"
+            timeToIdleSeconds="275400"
+            timeToLiveSeconds="275400"
+            overflowToDisk="false"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU"/>
+
+
+</ehcache>
+~~~
+
+</div>
+</details>
+
+</div>
+</details>
+
+
 
 </br>
 
