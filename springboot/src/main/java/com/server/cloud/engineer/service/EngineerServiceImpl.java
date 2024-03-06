@@ -21,21 +21,8 @@ public class EngineerServiceImpl implements EngineerService{
 
 	private final EngineerMapper engineerMapper;
 
-//	@Override
-//	@Cacheable(value = "engineerMapper.newList", key = "#eng_enid")
-//	public List<EngSerProInfoWorkInfoVO> newList(String eng_enid) {
-//		return engineerMapper.newList(eng_enid);
-//	}
-
-	private static void slowQuery(long seconds) {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-	}
-
 	@Override
+	@Cacheable(value = "engineerMapper.newList", key = "#eng_enid")
 	public List<EngSerProInfoWorkInfoVO> newList(String eng_enid) {
 		return engineerMapper.newList(eng_enid);
 	}
