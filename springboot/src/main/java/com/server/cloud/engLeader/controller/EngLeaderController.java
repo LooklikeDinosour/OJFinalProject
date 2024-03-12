@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -30,16 +31,15 @@ import com.server.cloud.command.WorkInfoVO;
 import com.server.cloud.engLeader.service.EngLeaderService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/main/engleader")
 public class EngLeaderController {
 
-	@Autowired
 	@Qualifier("engLeaderService")
-	private EngLeaderService engLeaderService;
+	private final EngLeaderService engLeaderService;
 	
-	@Autowired
 	@Qualifier("alarmService")
-	private AlarmService alarmService;
+	private final AlarmService alarmService;
 	
 	@GetMapping("/info")
 	public ResponseEntity<Map<String,String>> getLeaderInfo(@RequestParam("user_id") String leaderId){
@@ -99,6 +99,7 @@ public class EngLeaderController {
     engLeaderService.updatePro(pro_id);
 		return new ResponseEntity<>("ok",HttpStatus.OK);	
 	}
+
 
 	@GetMapping("/getAllPro")
 	public ResponseEntity<List<ProjectInfoVO>> getAllPro(@RequestParam("userId") String leader_id){	
