@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.server.cloud.command.CusVO;
@@ -74,6 +74,7 @@ public class EngLeaderServiceImpl implements EngLeaderService{
 
 
 	@Override
+	@Cacheable(value = "engLeaderMapper.getAllPro", key = "#leader_id")
 	public List<ProjectInfoVO> getAllPro(String leader_id) {
 		return engLeaderMapper.getAllPro(leader_id);		
 	}
@@ -110,6 +111,7 @@ public class EngLeaderServiceImpl implements EngLeaderService{
 
 
 	@Override
+	@Cacheable(value = "engLeaderMapper.getAllSche", key = "#leader_id")
 	public List<ScheduleVO> getAllSchedule(String leader_id) {
 		return engLeaderMapper.getAllSchedule(leader_id);
 	}

@@ -25,5 +25,29 @@
             diskPersistent="false"
             memoryStoreEvictionPolicy="LRU"/>
 
+    <cache
+            name="engLeaderMapper.getAllPro"
+            maxElementsInMemory="1000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            statistics="false"
+            timeToIdleSeconds="275400"
+            timeToLiveSeconds="275400"
+            overflowToDisk="false"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache
+            name="engLeaderMapper.getAllSche"
+            maxElementsInMemory="2000"
+            maxElementsOnDisk="0"
+            eternal="false"
+            statistics="false"
+            timeToIdleSeconds="275400"
+            timeToLiveSeconds="275400"
+            overflowToDisk="false"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="LRU"/>
+
 
 </ehcache>

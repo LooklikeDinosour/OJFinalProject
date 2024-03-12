@@ -95,10 +95,5 @@ public class AlarmController {
 		alarmService.changeAlarm(data.get("alarmNum"));
 		 
 	 }
-
 	 
-	 
-	 
-	 
-
 }

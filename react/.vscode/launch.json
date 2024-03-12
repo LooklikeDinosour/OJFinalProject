@@ -5,7 +5,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome",
-      "url": "http://localhost:3000",
+      "url": "http://localhost::3000",
       "webRoot": "C:\\Users\\rccar\\OneDrive\\바탕 화면\\ReactProject1\\reactPro"
     }
   ]
