@@ -111,6 +111,7 @@ public class EngLeaderServiceImpl implements EngLeaderService{
 
 
 	@Override
+	@Cacheable(value = "engLeaderMapper.getAllSche", key = "#leader_id")
 	public List<ScheduleVO> getAllSchedule(String leader_id) {
 		return engLeaderMapper.getAllSchedule(leader_id);
 	}

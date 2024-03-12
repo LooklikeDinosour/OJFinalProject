@@ -158,8 +158,9 @@ public class EngLeaderController {
 	
 	@GetMapping("/getAllSche")
 	public ResponseEntity<List<ScheduleVO>> getAllSche(@RequestParam("userId") String leader_id){
-		
-		List<ScheduleVO> list = engLeaderService.getAllSchedule(leader_id);		
+		long start = System.currentTimeMillis();
+		List<ScheduleVO> list = engLeaderService.getAllSchedule(leader_id);
+		System.out.println("호출 시간 : " + (System.currentTimeMillis() - start));
 		return new ResponseEntity<>(list,HttpStatus.OK);
 	}
 	

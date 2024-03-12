@@ -22,7 +22,7 @@ public class EngineerServiceImpl implements EngineerService{
 	private final EngineerMapper engineerMapper;
 
 	@Override
-	@Cacheable(value = "EngineerMapper.newList", key = "#eng_enid")
+	@Cacheable(value = "engineerMapper.newList", key = "#eng_enid")
 	public List<EngSerProInfoWorkInfoVO> newList(String eng_enid) {
 		return engineerMapper.newList(eng_enid);
 	}
