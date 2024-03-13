@@ -81,6 +81,7 @@ public class EngLeaderServiceImpl implements EngLeaderService{
 
 
 	@Override
+	@Cacheable(value = "engLeaderMapper.getClient", key ="#leader_id")
 	public List<CusVO> getClient(String leader_id) {		
 		return engLeaderMapper.getClient(leader_id);
 	}

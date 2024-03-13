@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.server.cloud.command.AdminMainVO;
@@ -26,12 +28,13 @@ import com.server.cloud.pagenation.Criteria;
 import com.server.cloud.s3.AwsMapper;
 
 @Service("adminSerivce")
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService{
 
-	@Autowired
-	AdminMapper adminMapper;
-	@Autowired
-	AwsMapper awsMapper;
+
+	private final AdminMapper adminMapper;
+
+	private final AwsMapper awsMapper;
 
 	@Override
 	public void setAnno(NoticeVO vo) {
@@ -168,6 +171,7 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.getServerInsList(server_id);
 	}
 	@Override
+	@Cacheable(value = "adminMapper.getAnnoList", key = "#cri")
 	public List<NoticeVO> getList(Criteria cri) {	
 		return adminMapper.getList(cri);
 	}
