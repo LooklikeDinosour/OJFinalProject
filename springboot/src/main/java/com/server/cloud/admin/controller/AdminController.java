@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -37,36 +38,33 @@ import com.server.cloud.command.WorkInfoVO;
 import com.server.cloud.engLeader.service.EngLeaderService;
 import com.server.cloud.pagenation.Criteria;
 
+@RequiredArgsConstructor
 @RestController
 public class AdminController {
 
 
-	@Autowired
 	@Qualifier("adminSerivce")
-	AdminService adminService;
-	
-	@Autowired
+	private final AdminService adminService;
+
 	@Qualifier("alarmService")
-	private AlarmService alarmService;
+	private final AlarmService alarmService;
 
-  @Autowired
 	@Qualifier("engLeaderService")
-	private EngLeaderService engLeaderService;
+	private final EngLeaderService engLeaderService;
 
-	private Criteria cri=new Criteria();
+	private Criteria cri = new Criteria();
 
 	@GetMapping("/api/main/AnnoList")//공지사항 게시판 목록 불러오기
 	public ResponseEntity<?> getList(@RequestParam("currentPage") int currentPage,@RequestParam("postsPerPage")int postsPerPage,String role){
 
-		Map<String, Integer>page= new HashMap<>();
+		long start = System.currentTimeMillis();
+
 		cri.setPage(currentPage);
 		cri.setAmount(postsPerPage);
 		cri.setRole(role);
 
-		List<NoticeVO> notice=adminService.getList(cri);
-
-
-
+		List<NoticeVO> notice = adminService.getList(cri);
+		System.out.println("공지사항 캐시 : " + (System.currentTimeMillis() - start));
 		return new ResponseEntity<>(notice,HttpStatus.OK);
 	}
 
@@ -111,8 +109,8 @@ public class AdminController {
 			@RequestParam("postsPerPage")int postsPerPage,
 			@RequestParam("cs_writer")String cs_writer,
 			@RequestParam("role")String role){
-		Map<String, Integer>page= new HashMap<>();
-		EngineerVO vo= adminService.engGetinfo(cs_writer);
+		Map<String, Integer> page = new HashMap<>();
+		EngineerVO vo = adminService.engGetinfo(cs_writer);
 		cri.setEng_taem_num(vo.getTeam_num());
 		cri.setPage(currentPage);
 		cri.setAmount(postsPerPage);
@@ -124,8 +122,7 @@ public class AdminController {
 		for (int i = 0; i < notice1.size(); i++) {
 			notice.add(notice1.get(i));
 		}
-		
-		
+
 		return new ResponseEntity<>(notice,HttpStatus.OK);
 	}
 	@GetMapping("/api/main/csEngineerLeaderList")//문의사항 목록 불러오기(engineer&engineerLeader)
@@ -184,8 +181,6 @@ public class AdminController {
 	}
 	
 
-	
-	
 	@GetMapping("/api/main/admin")
 	public ResponseEntity<Map<String,Object>> getMain(){
 
@@ -267,7 +262,7 @@ public class AdminController {
 
 		int result = adminService.inputTeamNum(pro_id, team_num, pro_status);
 		alarmService.assignTeam(team_num);
-    engLeaderService.updatePro2(pro_id);
+    	engLeaderService.updatePro2(pro_id);
 
 
 		return new ResponseEntity<>("ok", HttpStatus.OK);

@@ -41,7 +41,6 @@ public class EngineerServiceImpl implements EngineerService{
 	public int registWorkLog(List<WorkInfoVO> ServerDetailsArray) {
 		return engineerMapper.registWorkLog(ServerDetailsArray);}
 
-
 	@Override
 	public List<EngineerVO> engineerListMap(String eng_enid) {
 		return engineerMapper.engineerListMap(eng_enid);

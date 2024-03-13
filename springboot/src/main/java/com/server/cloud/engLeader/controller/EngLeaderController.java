@@ -148,14 +148,7 @@ public class EngLeaderController {
 		map.put("scheList",sche);
 		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
-//	@GetMapping("/getEngInfo2/{eng_enid}")
-//	public ResponseEntity<Map<String,Object>> getEngInfo2(@PathVariable String eng_enid){
-//		List<ServerVO> list = engLeaderService.getEngSchedule2(eng_enid);
-//		
-//		
-//		return new ResponseEntity<>(list,HttpStatus.OK);
-//	}
-	
+
 	@GetMapping("/getAllSche")
 	public ResponseEntity<List<ScheduleVO>> getAllSche(@RequestParam("userId") String leader_id){
 		long start = System.currentTimeMillis();
@@ -185,7 +178,7 @@ public class EngLeaderController {
 	@GetMapping("/getTeamEngList2")
 	public ResponseEntity<List<EngineerVO>> getTeamEngList2(@RequestParam("pro_pi") String pro_pi, 
 															@RequestParam("leader_id") String leader_id){
-		List<EngineerVO> list= engLeaderService.getTeamEngList(pro_pi,leader_id);
+		List<EngineerVO> list = engLeaderService.getTeamEngList(pro_pi,leader_id);
 		return new ResponseEntity<>(list,HttpStatus.OK);
 	}
 
