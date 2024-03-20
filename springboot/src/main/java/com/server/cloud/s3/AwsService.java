@@ -1,5 +1,7 @@
 package com.server.cloud.s3;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface AwsService {
@@ -10,8 +12,7 @@ public interface AwsService {
 
 	void setFile(FileVO fileVO);
 	
-	int setFiles(List<FileVO> list, String user_id);
-	
+	void setFiles(List<MultipartFile> list, String user_id);
 
 	List<FileVO> getFiles(String work_filenum);
 

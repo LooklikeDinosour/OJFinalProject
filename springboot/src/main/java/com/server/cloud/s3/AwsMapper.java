@@ -16,7 +16,7 @@ public interface AwsMapper {
 
 	void setFile(FileVO fileVO);
 	
-	int setFiles(@Param("list") List<FileVO> list, @Param("user_id") String user_id);
+	void setFiles(@Param("list") List<FileVO> list, @Param("user_id") String user_id);
 
 	void setAnno(NoticeVO vo);
 

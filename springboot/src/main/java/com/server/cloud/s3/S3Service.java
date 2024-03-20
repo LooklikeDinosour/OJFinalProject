@@ -1,29 +1,18 @@
 package com.server.cloud.s3;
 
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.Delete;
@@ -35,7 +24,6 @@ import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.regions.Region;
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -51,11 +39,7 @@ public class S3Service {
 	@Value("${aws_bucket_name}")
 	private String bucketName;
 
-
-	@Autowired
-	S3Client s3;
-	
-//	private final AmazonS3 amazons3;
+	private final S3Client s3;
 	
 	public void getBuketList() {
 		
@@ -63,12 +47,12 @@ public class S3Service {
 		ListBucketsResponse listBucketsResponse = s3.listBuckets(listBucketsRequest);
 		listBucketsResponse.buckets().stream().forEach(x -> System.out.println(x.name()));
 
-		
 	}
 	
 	public String putS3Object(String originName, byte[] originData) {
 		// TODO Auto-generated method stub
-		System.out.println(originName);
+		log.info("originName = {}", originName);
+		//System.out.println(originName);
 		try {
 			Map<String, String>metaData=new HashMap<>();
 			metaData.put("x-amz-meta-myVal", "test");
@@ -79,14 +63,12 @@ public class S3Service {
 					.build();
 			
 			PutObjectResponse response=s3.putObject(putOb, RequestBody.fromBytes(originData));
-			 String objectURI = "https://" + bucketName + ".s3.amazonaws.com/" + originName;
-			 return objectURI;
+			String objectURI = "https://" + bucketName + ".s3.amazonaws.com/" + originName;
+			return objectURI;
 		}catch (Exception e) {
-			   e.printStackTrace();
-		        return null;
+			e.printStackTrace();
+		    return null;
 		}
-		
-		
 	}
 	
 

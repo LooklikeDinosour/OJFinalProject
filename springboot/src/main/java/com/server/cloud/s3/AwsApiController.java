@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -34,26 +36,22 @@ import com.server.cloud.main.service.CusService;
 
 
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AwsApiController {
-	@Autowired
-	AdminService adminService;
+
+	private final AdminService adminService;
 
 	@Value("${aws_access_key_id}")
 	private String aws_access_key_id;
 
-	@Autowired
-	S3Service s3;
+	private final S3Service s3;
 
+	private final CusService cusService;
 
-	@Autowired
-	CusService cusService;
+	private final AwsService awsService;
 
-
-
-
-	@Autowired
-	AwsService awsService;
 	@PostMapping("/api/main/admin/noticeWrite")
 	public ResponseEntity<?> noticeWrite(@RequestBody NoticeVO vo){
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -96,9 +94,9 @@ public class AwsApiController {
 			}else {
 
 				String originName=file.getOriginalFilename();
-				byte[]originData=file.getBytes();
-				String objectURI =s3.putS3Object(originName,originData);
-				FileVO fileVO=new FileVO().builder()
+				byte[] originData = file.getBytes();
+				String objectURI = s3.putS3Object(originName, originData);
+				FileVO fileVO = new FileVO().builder()
 						.file_name(originName)
 						.file_path(objectURI)
 						.file_type(file.getContentType())
@@ -108,33 +106,36 @@ public class AwsApiController {
 				System.out.println(fileVO.toString());
 				awsService.setFile(fileVO);
 
-				return new ResponseEntity<>("성공",HttpStatus.OK);
+				return new ResponseEntity<>("성공", HttpStatus.OK);
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 
 		return new ResponseEntity<>("?",HttpStatus.OK);
-	}	@PostMapping("/api/main/cloudUploadCs")
-	public ResponseEntity<?>cloudUploadCs(@RequestParam("file_data")MultipartFile file,@RequestParam("userId")String userId,
+	}
+
+	@PostMapping("/api/main/cloudUploadCs")
+	public ResponseEntity<?>cloudUploadCs(@RequestParam("file_data") MultipartFile file, @RequestParam("userId")String userId,
 			String fileId){
 		Instant now = Instant.now();
 		Timestamp timestamp = Timestamp.from(now);
-		try {String originName=file.getOriginalFilename();
-		byte[]originData=file.getBytes();
-		String objectURI =s3.putS3Object(originName,originData);
-		FileVO fileVO=new FileVO().builder()
-				.file_name(originName)
-				.file_path(objectURI)
-				.file_type(file.getContentType())
-				.user_id(userId)
-				.upload_date(timestamp)
-				.build();
-		System.out.println(fileVO.toString());
-		awsService.setFileCs(fileVO);
+		try {
+			String originName=file.getOriginalFilename();
+			byte[]originData=file.getBytes();
+			String objectURI =s3.putS3Object(originName,originData);
+			FileVO fileVO=new FileVO().builder()
+					.file_name(originName)
+					.file_path(objectURI)
+					.file_type(file.getContentType())
+					.user_id(userId)
+					.upload_date(timestamp)
+					.build();
+			System.out.println(fileVO.toString());
+			awsService.setFileCs(fileVO);
 
-		return new ResponseEntity<>("성공",HttpStatus.OK);
+			return new ResponseEntity<>("성공",HttpStatus.OK);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -144,42 +145,12 @@ public class AwsApiController {
 
 
 	@PostMapping("/api/main/cloudMultiUpload")
-	public ResponseEntity<Integer> multiUpload(@RequestParam("file_data") List<MultipartFile> fileList,
-			@RequestParam("userId") String userId) {
-		Instant now = Instant.now();
-		Timestamp timestamp = Timestamp.from(now);
-		//System.out.println(fileId);
-		System.out.println(fileList.toString());
-		System.out.println(userId);
+	public ResponseEntity<String> multiUpload(
+											@RequestParam("file_data") List<MultipartFile> fileList,
+											@RequestParam("userId") String userId) {
 
-
-		fileList = fileList.stream().filter( f -> f.isEmpty() == false).collect(Collectors.toList());
-		int result = 0;
-		try {
-			List<FileVO> list = new ArrayList<>();
-			for (MultipartFile file : fileList) {
-
-				String originName=file.getOriginalFilename();
-				byte[]originData=file.getBytes();
-				String objectURI =s3.putS3Object(originName,originData);
-				FileVO fileVO=new FileVO().builder()
-						.file_name(originName)
-						.file_path(objectURI)
-						.file_type(file.getContentType())
-						.user_id(userId)
-						.upload_date(timestamp)
-						.build();
-				
-				list.add(fileVO);
-				}
-
-				result = awsService.setFiles(list, userId);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		return new ResponseEntity<>(result,HttpStatus.OK);
-
+		awsService.setFiles(fileList, userId);
+		return new ResponseEntity<>("resultMessage", HttpStatus.OK);
 	}
 
 
@@ -221,6 +192,7 @@ public class AwsApiController {
 	}
 	@PostMapping("/api/main/inQuryDel")
 	public ResponseEntity<?>inQuryDel(@RequestBody Map<String, Object> deleteA ){
+
 		if(deleteA.get("file_name")!=null) {
 
 			System.out.println(deleteA.get("file_name"));
@@ -238,12 +210,11 @@ public class AwsApiController {
 	@GetMapping("/api/main/getFiles")
 	public ResponseEntity<?> getFiles(String work_filenum) {
 		System.out.println(work_filenum);
-		if(work_filenum != null) {
-			
-			List<FileVO> files = awsService.getFiles(work_filenum);
-			return new ResponseEntity<>(files, HttpStatus.OK);
-		} else {
+		if(work_filenum.isEmpty()) {
 			return new ResponseEntity<>("파일 없음", HttpStatus.OK);
 		}
+
+		List<FileVO> files = awsService.getFiles(work_filenum);
+		return new ResponseEntity<>(files, HttpStatus.OK);
 	}
 }
