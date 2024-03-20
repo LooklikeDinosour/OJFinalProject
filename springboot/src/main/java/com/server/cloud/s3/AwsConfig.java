@@ -29,7 +29,6 @@ public class AwsConfig {
 		return credentialsProvider;
 	}
 	
-	
 	@Bean
 	public S3Client s3client() {
 		
@@ -41,8 +40,6 @@ public class AwsConfig {
 		return s3;
 
 	}
-	
-
 
 	@Bean
 	public AwsBasicCredentials awsBasicCredentials() {

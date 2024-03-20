@@ -2,9 +2,6 @@ package com.server.cloud.command;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +18,7 @@ public class WorkInfoVO {
 	
 	private String work_num;
 	private String work_filenum;
-	@DateTimeFormat
-	(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private Timestamp work_date;
 	private String work_division;
 	@JsonFormat
