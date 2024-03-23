@@ -89,7 +89,7 @@ public class EngineerController {
 
 		System.out.println(ServerDetailsArray.toString());
 		int result = engineerService.registWorkLog(ServerDetailsArray);
-		System.out.println(result);
+
 
 		// 작업 로그 등록이 성공하면 성공 응답을 반환합니다.
 		return new ResponseEntity<>(result, HttpStatus.OK);

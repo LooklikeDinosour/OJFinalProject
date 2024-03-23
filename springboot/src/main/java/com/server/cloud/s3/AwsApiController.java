@@ -149,7 +149,9 @@ public class AwsApiController {
 											@RequestParam("file_data") List<MultipartFile> fileList,
 											@RequestParam("userId") String userId) {
 
+		long start = System.currentTimeMillis();
 		awsService.setFiles(fileList, userId);
+        System.out.println("업로드 시간 : " + (System.currentTimeMillis() - start));
 		return new ResponseEntity<>("resultMessage", HttpStatus.OK);
 	}
 
