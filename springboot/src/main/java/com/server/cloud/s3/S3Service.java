@@ -65,7 +65,7 @@ public class S3Service {
 			PutObjectResponse response=s3.putObject(putOb, RequestBody.fromBytes(originData));
 			String objectURI = "https://" + bucketName + ".s3.amazonaws.com/" + originName;
 			return objectURI;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		    return null;
 		}
