@@ -69,6 +69,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ### 담당 기능 (담당 파트 화면 구현, 기능 구현 동시 진행)
 	프로젝트 기여도 : 20%
 	1. 엔지니어페이지 점검세부사항 작성 및 AWS S3 BUCKET에 다중 파일 업로드 및 다운로드 구현
+	- 비동기를 이용하여 업로드 속도 약 80% 성능 개선
  	2. axios 라이브러리로 비동기통신의 api 호출 및 응답을 사용하여 아래 기능 구현
 	- 관리자페이지 신규 프로젝트 조회 및 팀 배정 기능
 	- 엔지니어페이지 팀원 보기 및 마이페이지 조회
@@ -85,9 +86,10 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ### 1. 엔지니어페이지 점검세부사항 작성 및 AWS S3 BUCKET에 다중 파일 업로드 및 다운로드 구현
    - 엔지니어가 서버 점검한 내용을 기록할 수 있는 기능
    - 점검사항외에 부가적인 문서, 사진 등을 첨부할 수 있게 다중 업로드 기능 구현
-   	- 다중 파일 업로드는 업로드 파일 갯수만 볼 수 있던 <input = multiple>형식이 아니라
-     <input=file>형식으로 파일 추가버튼을 통해 상황에 맞게 업로드 할 수 있게하고, 무엇을 업로드할지 다시 확인할 수 있게 구현
-   	- 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장
+     	1. CompletableFuture Class의 비동기를 이용하여 동기식 코드의 업로드보다 약 80% 성능 개선
+	2. 다중 파일 업로드는 업로드 파일 갯수만 볼 수 있던 <input = multiple>형식이 아니라
+     		<input=file>형식으로 파일 추가버튼을 통해 상황에 맞게 업로드 할 수 있게하고, 무엇을 업로드할지 다시 확인할 수 있게 구현
+   	3. 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장
    - DB에 대한 호출 횟수가 비용 증가의 원인이라 점검세부사항 이동시 모든 프로젝트를 한번에 호출하여 React에서 filter를 통해 분류하도록 구현  
      
 ### 시퀀스 다이어그램
@@ -100,6 +102,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
  
 #### 백엔드 코드
 :pushpin:<b>점검세부사항 코드</b>
+
+- 업로드 처리 속도 1.03s -> 1.80s (약 75%의 속도 개선)
+![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/3b2a7806-193a-4489-905e-81d5003a7edb)
 
 
 <details>
@@ -170,35 +175,57 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 <div markdown="1">
 
 ~~~java
+
 	@PostMapping("/api/main/cloudMultiUpload")
-	public ResponseEntity<Integer> multiUpload(@RequestParam("file_data") List<MultipartFile> fileList,
- 						   @RequestParam("userId") String userId) {
-		Instant now = Instant.now();
-		Timestamp timestamp = Timestamp.from(now);
-		
-		fileList = fileList.stream().filter( f -> f.isEmpty() == false).collect(Collectors.toList());
-		int result = 0;
+	public ResponseEntity<String> multiUpload(
+						@RequestParam("file_data") List<MultipartFile> fileList,
+						@RequestParam("userId") String userId) {
+
+		awsService.setFiles(fileList, userId);
+
+		return new ResponseEntity<>("resultMessage", HttpStatus.OK);
+	}
+
+~~~
+
+</div>
+</details>
+
+<details>
+<summary>관련 코드2 AwsServiceImpl 업로드 코드</summary>
+<div markdown="1">
+
+~~~java
+	@Override
+	public void setFiles(List<MultipartFile> fileList, String user_id) {
+
+		Timestamp timestamp = Timestamp.from(Instant.now());
+		// 프론트에서 넘어온 파일 중 빈 값이 있는지 검증하는 로직
+		List<MultipartFile> verifiedFileList = filterValidFiles(fileList);
+		// 설정한 threadpool 호출
+		Executor executor = asyncConfig.taskExecutor();
+
+			
+			// 비동기 작업 처리하기
+			List<CompletableFuture<FileVO>> asyncList = verifiedFileList.stream()
+					.map(file -> processFileAsync(user_id, file, timestamp, executor))
+					.collect(Collectors.toList());
+
+			CompletableFuture<Void> result = CompletableFuture.allOf(asyncList.toArray(new CompletableFuture[0]));
+			CompletableFuture<List<FileVO>> allCompletableFuture = result.thenApply( a -> {
+				return asyncList.stream()
+						.map(CompletableFuture::join)
+						.collect(Collectors.toList());
+			});
+
+
 		try {
-			List<FileVO> list = new ArrayList<>();
-			for (MultipartFile file : fileList) {
-				String originName=file.getOriginalFilename();
-				byte[]originData=file.getBytes();
-				String objectURI =s3.putS3Object(originName,originData);
-				FileVO fileVO=new FileVO().builder()
-							  .file_name(originName)
-							  .file_path(objectURI)
-							  .file_type(file.getContentType())
-							  .user_id(userId)
-							  .upload_date(timestamp)
-							  .build();
-	
-			list.add(fileVO);
-			}
-			result = awsService.setFiles(list, userId);
-		}catch (Exception e) {
+			List<FileVO> s3SaveList = allCompletableFuture.get();
+			awsMapper.setFiles(s3SaveList, user_id);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 ~~~
 
@@ -206,14 +233,30 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary>관련 코드2 ServiceImpl</summary>
+<summary>관련 코드3 AsyncConfig</summary>
 <div markdown="1">
 
 ~~~java
-	@Override
-	public int setFiles(List<FileVO> list, String user_id) {
-		return awsMapper.setFiles(list, user_id);
+	@Configuration
+	@EnableAsync
+	public class AsyncConfig {
+	
+	    private int CORE_POOL_SIZE = 5;
+	    private int MAX_POOL_SIZE = 50;
+	    private int QUEUE_CAPACITY = 100;
+	
+	    @Bean
+	    public ThreadPoolTaskExecutor taskExecutor() {
+	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	        executor.setCorePoolSize(CORE_POOL_SIZE); // 쓰레드 풀의 기본 크기
+	        executor.setMaxPoolSize(MAX_POOL_SIZE); // 쓰레드 풀의 최대 크기
+	        executor.setQueueCapacity(QUEUE_CAPACITY); //대기열의 크기
+	        executor.setThreadNamePrefix("asyncUploads"); // 스레드의 접두어
+	
+	        return executor;
+	    }
 	}
+		
 ~~~
 
 </div>
