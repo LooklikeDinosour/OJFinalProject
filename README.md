@@ -106,6 +106,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 - 업로드 처리 속도 1.03s -> 1.80s (약 75%의 속도 개선)
 ![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/3b2a7806-193a-4489-905e-81d5003a7edb)
 
+-실험 파일
+![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/239ba3d0-8c58-483c-b95b-e16a62dcaae7)
+
 
 <details>
 <summary>관련 코드1 엔지니어 Controller</summary>
