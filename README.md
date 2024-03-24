@@ -1,12 +1,5 @@
 
 # :pushpin: CloudOJ
-link : [서버작업관리 솔루션](http://3.35.150.190:3000/) 
-- Test ID
-- 관리자 : cloud200 / cloud200!
-- 엔지니어리더 : engL4 / engl123!
-- 엔지니어 : eng08 / eng12345!
-- 유저 : echopro23 / user12345!
-
 
 # 1. 참여 인원 & 제작 기간
 - 팀 프로젝트(팀 구성 : 6명)
@@ -76,8 +69,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 	- 엔지니어페이지 내 프로젝트 조회 Ehcache를 활용하여 TPS 4.4 -> 3,306 (약 750배 개선)
 
 
+### 핵심 기능
 <details>
-<summary><b>핵심 기능 상세 설명</b></summary>
+<summary>핵심 기능 상세 설명</summary>
 <div markdown="1">
 
 
@@ -86,9 +80,9 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 ### 1. 엔지니어페이지 점검세부사항 작성 및 AWS S3 BUCKET에 다중 파일 업로드 및 다운로드 구현
    - 엔지니어가 서버 점검한 내용을 기록할 수 있는 기능
    - 점검사항외에 부가적인 문서, 사진 등을 첨부할 수 있게 다중 업로드 기능 구현
-	1. CompletableFuture Class의 비동기를 이용하여 동기식 코드의 업로드보다 약 80% 성능 개선
-	2. 다중 파일 업로드는 업로드 파일 갯수만 볼 수 있던 <input = multiple>형식이 아니라 <input=file>형식으로 파일 추가버튼을 통해 상황에 맞게 업로드 할 수 있게하고, 무엇을 업로드할지 다시 확인할 수 있게 구현
-	3. 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장
+  1. CompletableFuture Class의 비동기를 이용하여 동기식 코드의 업로드보다 약 80% 성능 개선
+  2. 다중 파일 업로드는 업로드 파일 갯수만 볼 수 있던 <input = multiple>형식이 아니라 <input=file>형식으로 파일 추가버튼을 통해 상황에 맞게 업로드 할 수 있게하고, 무엇을 업로드할지 다시 확인할 수 있게 구현
+  3. 업로드 파일은 스토리지 확장성을 위해 AWS S3에 저장
    - DB에 대한 호출 횟수가 비용 증가의 원인이라 파악하여 점검세부사항 이동시 모든 프로젝트를 한번에 호출하여 React에서 filter를 통해 분류하도록 구현  
      
 ### 시퀀스 다이어그램
@@ -100,24 +94,26 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 - [관련코드](react/src/enMain/EnWorkDetail.js)
  
 #### 백엔드 코드
-:pushpin:<b>점검세부사항 코드</b>
+:pushpin:<b>점검세부사항 기능 코드</b>
 
-- 업로드 처리 속도 1.03s -> 1.80s (약 75%의 속도 개선)
+
+- CompletableFuture 비동기 방식을 이용하여 업로드 처리 속도 1.03s -> 1.80s (약 75%의 속도 개선)
+  * 아래 사진을 보시면 동기방식을 먼저 실행 후 비동기 방식으로 코드를 바꿔서 실행한 결과입니다.
 ![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/3b2a7806-193a-4489-905e-81d5003a7edb)
 
--실험 파일
+- 실험 파일은 다음과 같습니다. (약 11mb, 6mb, 6mb, 1mb)
 ![image](https://github.com/LooklikeDinosour/OJFinalProject/assets/133090170/239ba3d0-8c58-483c-b95b-e16a62dcaae7)
 
 
 <details>
-<summary>관련 코드1 엔지니어 Controller</summary>
+<summary>관련 코드 1 EngineerController</summary>
 <div markdown="1">
 
 ~~~java
-  //
 
 // 작업상세내역에서 요청보낸 엔지니어별로 배정받은 프로젝트 불러오는 기능
 // 엔지니어 고유 id에 해당하는 프로젝트와 프로젝트 산하의 서버를 응답
+
 	@GetMapping("/engineer/workDetail/{eng_enid}")
 	public ResponseEntity<Map<String, Object>> enWorkDetailToInfo(@PathVariable String eng_enid) {
 		List<EngSerProInfoWorkInfoVO> eSPIWlist = engineerService.engProInfo(eng_enid);
@@ -134,6 +130,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 
 // 작업상세내역서 등록 기능
 // 홈페이지에서 작성된 내용을 API를 통해 전달받아 DB에 기록
+
 	@PostMapping("/engineer/workDetail")
 	public ResponseEntity<Integer> registWorkLogs(@RequestBody List<WorkInfoVO> ServerDetailsArray) {
 		int result = engineerService.registWorkLog(ServerDetailsArray);
@@ -145,7 +142,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-    <summary>관련 코드2 ServiceImpl</summary>
+<summary>관련 코드 2 EngineerServiceImpl</summary>
 <div markdown="1">
 
 ~~~java
@@ -165,7 +162,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 	public int registWorkLog(List<WorkInfoVO> ServerDetailsArray) {
 		return engineerMapper.registWorkLog(ServerDetailsArray);}
 	
-	~~~
+~~~
 
 </div>
 </details>
@@ -194,7 +191,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary>관련 코드2 AwsServiceImpl 업로드 코드</summary>
+<summary>관련 코드 2 AwsServiceImpl 업로드 코드</summary>
 <div markdown="1">
 
 ~~~java
@@ -229,13 +226,45 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 			e.printStackTrace();
 		}
 	}
+
+//비동기 처리 메소드
+	private CompletableFuture<FileVO> processFileAsync(String user_id,
+							   MultipartFile file,
+							   Timestamp timestamp,
+							   Executor executor) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				String originName = file.getOriginalFilename();
+				byte[] originData = file.getBytes();
+				String objectURI = s3Service.putS3Object(originName, originData);
+
+				return new FileVO().builder()
+						.file_name(originName)
+						.file_path(objectURI)
+						.file_type(file.getContentType())
+						.user_id(user_id)
+						.upload_date(timestamp)
+						.build();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}, executor);
+	}
+
+	private List<MultipartFile> filterValidFiles(List<MultipartFile> fileList) {
+		List<MultipartFile> verifiedFileList = fileList.stream()
+				.filter(f -> !f.isEmpty())
+				.collect(Collectors.toList());
+		return verifiedFileList;
+	}
 ~~~
 
 </div>
 </details>
 
 <details>
-<summary>관련 코드3 AsyncConfig</summary>
+<summary>관련 코드 3 AsyncConfig</summary>
 <div markdown="1">
 
 ~~~java
@@ -265,7 +294,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary>관련 코드3 점검 세부사항 작성 SQL</summary>
+<summary>관련 코드 1 점검 세부사항 작성 SQL</summary>
 <div markdown="1">
 
 ~~~sql
@@ -312,7 +341,7 @@ link : [서버작업관리 솔루션](http://3.35.150.190:3000/)
 </details>
 
 <details>
-<summary>관련 코드4 다중파일 업로드 SQL </summary>
+<summary>관련 코드 2 다중파일 업로드 SQL </summary>
 <div markdown="1">
 
 ~~~sql
